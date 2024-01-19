@@ -11,27 +11,29 @@
     <version>1.4.15-SNAPSHOT</version>
   </parent>
 
-  <artifactId>tomcat</artifactId>
+  <artifactId>jetty11</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Tomcat Module</name>
-  <description>Logback Access Jakarta Tomcat Module module</description>
+  <name>Logback Access Jakarta Jetty 11 Module</name>
+  <description>Logback Access Jakarta Jetty 11 Module</description>
 
   <properties>
-
   </properties>
   
   <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit-jupiter-params.version}</version>
-      <scope>test</scope>
+
+    <dependency>      
+      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <artifactId>common</artifactId>
+      <version>${project.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>      
-      <scope>compile</scope>
+    <dependency>      
+      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <artifactId>common</artifactId>
+      <version>${project.version}</version>      
+      <type>test-jar</type>
+      <scope>test</scope>
+      
     </dependency>
 
     <dependency>
@@ -41,38 +43,18 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
-      <artifactId>common</artifactId>      
-      <scope>compile</scope>
-    </dependency>
     
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
-      <artifactId>common</artifactId>      
-      <version>${project.version}</version>      
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-   
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-catalina</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-coyote</artifactId>
-      <scope>compile</scope>
-      <optional>true</optional>
-    </dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>${jetty11.version}</version>
+      </dependency>
 
   </dependencies>
 
   <build>
     <plugins>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

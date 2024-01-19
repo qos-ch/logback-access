@@ -41,6 +41,7 @@
   <modules>
     <module>common</module>
     <module>tomcat</module>
+    <module>jetty11</module>    
   </modules>
 
   <properties>
@@ -69,7 +70,7 @@
     <greenmail.version>2.0.0-alpha-1</greenmail.version>
 
     <tomcat.version>10.0.10</tomcat.version>
-    <jetty.version>11.0.12</jetty.version>
+    <jetty11.version>11.0.12</jetty11.version>
     <jackson.version>2.15.0</jackson.version>
 
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
@@ -92,12 +93,6 @@
       <id>ceki</id>
       <name>Ceki Gulcu</name>
       <email>ceki@qos.ch</email>
-    </developer>
-
-    <developer>
-      <id>hixi</id>
-      <name>Joern Huxhorn</name>
-      <email>huxi@undisclosed.org</email>
     </developer>
   </developers>
 
@@ -178,12 +173,6 @@
         <groupId>org.apache.tomcat</groupId>
         <artifactId>tomcat-coyote</artifactId>
         <version>${tomcat.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>${jetty.version}</version>
       </dependency>
 
       <dependency>
