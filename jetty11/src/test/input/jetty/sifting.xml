@@ -1,7 +1,7 @@
 <configuration>
 
   <appender name="SIFTING"
-    class="ch.qos.logback.access.jakarta.sift.SiftingAppender">
+    class="ch.qos.logback.access.jakarta.common.sift.SiftingAppender">
 
     <Discriminator>
       <Key>uri</Key>
