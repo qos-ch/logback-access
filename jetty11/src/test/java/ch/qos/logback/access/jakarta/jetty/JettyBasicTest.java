@@ -11,7 +11,7 @@
  * under the terms of the GNU Lesser General Public License version 2.1
  * as published by the Free Software Foundation.
  */
-package ch.qos.logback.access.jakarta.common.jetty;
+package ch.qos.logback.access.jakarta.jetty;
 
 import ch.qos.logback.access.jakarta.common.spi.IAccessEvent;
 import ch.qos.logback.access.jakarta.common.spi.Util;

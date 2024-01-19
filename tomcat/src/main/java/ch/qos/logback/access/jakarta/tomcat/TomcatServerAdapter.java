@@ -11,37 +11,34 @@
  * under the terms of the GNU Lesser General Public License version 2.1
  * as published by the Free Software Foundation.
  */
-package ch.qos.logback.access.jakarta.common.jetty;
+package ch.qos.logback.access.jakarta.tomcat;
 
 import ch.qos.logback.access.jakarta.common.spi.ServerAdapter;
 
-import org.eclipse.jetty.http.HttpFields;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Response;
+import org.apache.catalina.connector.Request;
+import org.apache.catalina.connector.Response;
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A jetty specific implementation of the {@link ServerAdapter} interface.
+ * A tomcat specific implementation of the {@link ServerAdapter} interface.
  *
  * @author S&eacute;bastien Pennec
- * @author Ceki Gulcu
  */
-public class JettyServerAdapter implements ServerAdapter {
+public class TomcatServerAdapter implements ServerAdapter {
 
     Request request;
     Response response;
 
-    public JettyServerAdapter(Request jettyRequest, Response jettyResponse) {
-        this.request = jettyRequest;
-        this.response = jettyResponse;
+    public TomcatServerAdapter(Request tomcatRequest, Response tomcatResponse) {
+        this.request = tomcatRequest;
+        this.response = tomcatResponse;
     }
 
     @Override
     public long getContentLength() {
-        return response.getContentCount();
+        return response.getContentLength();
     }
 
     @Override
@@ -51,20 +48,16 @@ public class JettyServerAdapter implements ServerAdapter {
 
     @Override
     public long getRequestTimestamp() {
-        return request.getTimeStamp();
+        return request.getCoyoteRequest().getStartTime();
     }
 
     @Override
     public Map<String, String> buildResponseHeaderMap() {
         Map<String, String> responseHeaderMap = new HashMap<String, String>();
-        HttpFields httpFields = response.getHttpFields();
-        Enumeration<String> e = httpFields.getFieldNames();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
+        for (String key : response.getHeaderNames()) {
             String value = response.getHeader(key);
             responseHeaderMap.put(key, value);
         }
         return responseHeaderMap;
     }
-
 }

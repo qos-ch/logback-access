@@ -11,10 +11,11 @@
  * under the terms of the GNU Lesser General Public License version 2.1
  * as published by the Free Software Foundation.
  */
-package ch.qos.logback.access.jakarta.common.sift;
+package ch.qos.logback.access.jakarta.jetty;
 
-import ch.qos.logback.access.jakarta.common.jetty.JettyFixtureBase;
-import ch.qos.logback.access.jakarta.common.jetty.RequestLogImpl;
+import ch.qos.logback.access.jakarta.common.sift.SiftingAppender;
+import ch.qos.logback.access.jakarta.jetty.JettyFixtureBase;
+import ch.qos.logback.access.jakarta.jetty.RequestLogImpl;
 import ch.qos.logback.access.jakarta.common.spi.IAccessEvent;
 import ch.qos.logback.access.jakarta.common.spi.Util;
 import ch.qos.logback.core.read.ListAppender;

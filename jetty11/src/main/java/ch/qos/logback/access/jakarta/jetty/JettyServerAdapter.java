@@ -11,34 +11,37 @@
  * under the terms of the GNU Lesser General Public License version 2.1
  * as published by the Free Software Foundation.
  */
-package ch.qos.logback.access.jakarta.common.tomcat;
+package ch.qos.logback.access.jakarta.jetty;
 
 import ch.qos.logback.access.jakarta.common.spi.ServerAdapter;
 
-import org.apache.catalina.connector.Request;
-import org.apache.catalina.connector.Response;
+import org.eclipse.jetty.http.HttpFields;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A tomcat specific implementation of the {@link ServerAdapter} interface.
+ * A jetty specific implementation of the {@link ServerAdapter} interface.
  *
  * @author S&eacute;bastien Pennec
+ * @author Ceki Gulcu
  */
-public class TomcatServerAdapter implements ServerAdapter {
+public class JettyServerAdapter implements ServerAdapter {
 
     Request request;
     Response response;
 
-    public TomcatServerAdapter(Request tomcatRequest, Response tomcatResponse) {
-        this.request = tomcatRequest;
-        this.response = tomcatResponse;
+    public JettyServerAdapter(Request jettyRequest, Response jettyResponse) {
+        this.request = jettyRequest;
+        this.response = jettyResponse;
     }
 
     @Override
     public long getContentLength() {
-        return response.getContentLength();
+        return response.getContentCount();
     }
 
     @Override
@@ -48,16 +51,20 @@ public class TomcatServerAdapter implements ServerAdapter {
 
     @Override
     public long getRequestTimestamp() {
-        return request.getCoyoteRequest().getStartTime();
+        return request.getTimeStamp();
     }
 
     @Override
     public Map<String, String> buildResponseHeaderMap() {
         Map<String, String> responseHeaderMap = new HashMap<String, String>();
-        for (String key : response.getHeaderNames()) {
+        HttpFields httpFields = response.getHttpFields();
+        Enumeration<String> e = httpFields.getFieldNames();
+        while (e.hasMoreElements()) {
+            String key = (String) e.nextElement();
             String value = response.getHeader(key);
             responseHeaderMap.put(key, value);
         }
         return responseHeaderMap;
     }
+
 }
