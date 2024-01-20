@@ -41,6 +41,7 @@
   <modules>
     <module>common</module>
     <module>tomcat</module>
+    <module>tomcat_10_1_blackbox</module>    
     <module>jetty11</module>    
   </modules>
 
@@ -69,7 +70,8 @@
     <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
     <greenmail.version>2.0.0-alpha-1</greenmail.version>
 
-    <tomcat.version>10.0.10</tomcat.version>
+    <tomcat_10_0.version>10.0.27</tomcat_10_0.version>
+    <tomcat_10_1.version>10.1.18</tomcat_10_1.version>    
     <jetty11.version>11.0.12</jetty11.version>
     <jackson.version>2.15.0</jackson.version>
 
@@ -140,6 +142,12 @@
         <version>${logback.core.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.core.version}</version>
+      </dependency>
+
     <dependency>
       <groupId>ch.qos.logback.access.jakarta</groupId>
       <artifactId>common</artifactId>
@@ -164,16 +172,6 @@
         <version>${jakarta.activation.version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>org.apache.tomcat</groupId>
-        <artifactId>tomcat-catalina</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.tomcat</groupId>
-        <artifactId>tomcat-coyote</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
 
       <dependency>
         <groupId>org.codehaus.janino</groupId>
