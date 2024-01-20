@@ -13,7 +13,6 @@
  */
 package ch.qos.logback.access.jakarta.tomcat;
 
-import ch.qos.logback.access.jakarta.common.AccessTestConstants;
 import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.status.testUtil.StatusChecker;
 import org.apache.catalina.LifecycleException;
@@ -44,7 +43,7 @@ public class LogbackValveTest {
 
     @Test
     public void fileUnderCatalinaBaseShouldBeFound() throws LifecycleException {
-        System.setProperty(LogbackValve.CATALINA_BASE_KEY, AccessTestConstants.JORAN_INPUT_PREFIX + "tomcat/");
+        System.setProperty(LogbackValve.CATALINA_BASE_KEY, TomcatTestContants.JORAN_INPUT_PREFIX + "tomcat/");
         final String fileName = "logback-access.xml";
         setupValve(fileName);
         valve.start();
@@ -55,7 +54,7 @@ public class LogbackValveTest {
 
     @Test
     public void nonExistingConfigFileUnderCatalinaBaseShouldResultInWarning() throws LifecycleException {
-        final String path = AccessTestConstants.JORAN_INPUT_PREFIX + "tomcat/";
+        final String path = TomcatTestContants.JORAN_INPUT_PREFIX + "tomcat/";
         final String fileName = "logback-test2-config.xml";
         final String fullPath = path + fileName;
         System.setProperty(LogbackValve.CATALINA_BASE_KEY, path);
@@ -67,7 +66,7 @@ public class LogbackValveTest {
 
     @Test
     public void fileUnderCatalinaHomeShouldBeFound() throws LifecycleException {
-        System.setProperty(LogbackValve.CATALINA_HOME_KEY, AccessTestConstants.JORAN_INPUT_PREFIX + "tomcat/");
+        System.setProperty(LogbackValve.CATALINA_HOME_KEY, TomcatTestContants.JORAN_INPUT_PREFIX + "tomcat/");
         final String fileName = "logback-access.xml";
         setupValve(fileName);
         valve.start();

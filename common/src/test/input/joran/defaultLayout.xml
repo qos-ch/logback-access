@@ -1,7 +1,8 @@
 <configuration>
 
-  <appender name="STR_LIST"
-    class="ch.qos.logback.core.testUtil.StringListAppender">
+  <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+  <appender name="STR_LIST" class="ch.qos.logback.core.testUtil.StringListAppender">
     <!-- the fact that the layout class is not declared tests default component class
       mapping rules -->
     <layout>

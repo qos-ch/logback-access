@@ -43,7 +43,7 @@
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
-      <scope>provided</scope>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -97,15 +97,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <forkMode>once</forkMode>
-          <!--<parallel>classes</parallel>-->
+<!--          <forkMode>once</forkMode>-->
+          <argLine>
+            --add-modules jakarta.servlet
+          </argLine>
           <reportFormat>plain</reportFormat>
           <disableXmlReport>true</disableXmlReport>
-          <excludes>
-            <exclude>**/AllAccessTest.java</exclude>
-            <exclude>**/PackageTest.java</exclude>
-            <exclude>**/SerializationPerfTest.java</exclude>
-          </excludes>
         </configuration>
       </plugin>
     </plugins>
