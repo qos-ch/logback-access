@@ -11,10 +11,10 @@
     <version>1.4.15-SNAPSHOT</version>
   </parent>
 
-  <artifactId>tomcat_10_1_blackbox</artifactId>
+  <artifactId>tomcat_11_0_blackbox</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Tomcat 10.1 Blackbox Module</name>
-  <description>Logback Access Jakarta Tomcat 10.1 Blackbox module</description>
+  <name>Logback Access Jakarta Tomcat 11.0 Blackbox Module</name>
+  <description>Logback Access Jakarta Tomcat 11.0 Blackbox module</description>
 
   <properties>
 
@@ -93,13 +93,13 @@
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-catalina</artifactId>
-      <version>${tomcat_10_1.version}</version>
+      <version>${tomcat_11_0.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-coyote</artifactId>
-      <version>${tomcat_10_1.version}</version>      
+      <version>${tomcat_11_0.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>

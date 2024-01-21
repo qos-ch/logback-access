@@ -41,7 +41,8 @@
   <modules>
     <module>common</module>
     <module>tomcat</module>
-    <module>tomcat_10_1_blackbox</module>    
+    <module>tomcat_10_1_blackbox</module>
+    <module>tomcat_11_0_blackbox</module>
     <module>jetty11</module>    
   </modules>
 
@@ -71,7 +72,8 @@
     <greenmail.version>2.0.0-alpha-1</greenmail.version>
 
     <tomcat_10_0.version>10.0.27</tomcat_10_0.version>
-    <tomcat_10_1.version>10.1.18</tomcat_10_1.version>    
+    <tomcat_10_1.version>10.1.18</tomcat_10_1.version>
+    <tomcat_11_0.version>11.0.0-M16</tomcat_11_0.version>
     <jetty11.version>11.0.12</jetty11.version>
     <jackson.version>2.15.0</jackson.version>
 

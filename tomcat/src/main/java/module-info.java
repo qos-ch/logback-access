@@ -1,11 +1,11 @@
-module ch.qos.logback.access.jakarta.tomcat {
+module ch.qos.logback.access.tomcat {
   requires ch.qos.logback.core;
-  requires ch.qos.logback.access.jakarta.common;
+  requires ch.qos.logback.access.common;
 
   requires org.apache.tomcat.coyote;
   requires org.apache.tomcat.catalina;
 
-  exports ch.qos.logback.access.jakarta.tomcat;
+  exports ch.qos.logback.access.tomcat;
   
 }
 
