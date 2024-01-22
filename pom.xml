@@ -44,6 +44,7 @@
     <module>tomcat</module>
     <module>tomcat_10_1_blackbox</module>
     <module>tomcat_11_0_blackbox</module>
+    <module>jetty11</module>
     <module>jetty12</module>
   </modules>
 

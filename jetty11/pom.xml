@@ -13,8 +13,8 @@
 
   <artifactId>jetty11</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Jetty 11 Module</name>
-  <description>Logback Access Jakarta Jetty 11 Module</description>
+  <name>Logback Access Jetty 11 Module</name>
+  <description>Logback Access  Jetty 11 Module</description>
 
   <properties>
   </properties>
