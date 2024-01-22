@@ -11,23 +11,17 @@
  * under the terms of the GNU Lesser General Public License version 2.1
  * as published by the Free Software Foundation.
  */
-package ch.qos.logback.access.common.pattern;
+package ch.qos.logback.access.common.blackbox.net;
 
-import ch.qos.logback.access.common.spi.IAccessEvent;
+import java.io.IOException;
+import java.io.OutputStream;
 
-/**
- * The content length of the bytes sent.
- */
-public class ContentLengthConverter extends AccessConverter {
+public class NOPOutputStream extends OutputStream {
 
     @Override
-    public String convert(IAccessEvent accessEvent) {
-        long len = accessEvent.getContentLength();
-        if (len == IAccessEvent.SENTINEL) {
-            return IAccessEvent.NA;
-        } else {
-            return Long.toString(len);
-        }
+    public void write(int b) throws IOException {
+        // do nothing
+
     }
 
 }

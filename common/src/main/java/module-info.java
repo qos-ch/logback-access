@@ -1,10 +1,13 @@
 module ch.qos.logback.access.common {
   requires ch.qos.logback.core;
 
-  // jakarta.servlet 5.0 is not modular
+  // jakarta.servlet 5.0 is not modular but 6.0 is
   requires static jakarta.servlet;
 
   requires static java.management;
+
+  requires static janino;
+  requires static commons.compiler;
 
   exports ch.qos.logback.access.common;
   exports ch.qos.logback.access.common.boolex;
@@ -25,7 +28,6 @@ module ch.qos.logback.access.common {
   exports ch.qos.logback.access.common.sift;
 
   exports ch.qos.logback.access.common.spi;
-
 
 }
 

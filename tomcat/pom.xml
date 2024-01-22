@@ -6,15 +6,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>ch.qos.logback.access.jakarta</groupId>
+    <groupId>ch.qos.logback.access</groupId>
     <artifactId>parent</artifactId>
     <version>1.4.15-SNAPSHOT</version>
   </parent>
 
   <artifactId>tomcat</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Tomcat Module</name>
-  <description>Logback Access Jakarta Tomcat Module module</description>
+  <name>Logback Access Jakarta Module</name>
+  <description>Logback Access Tomcat Module module</description>
 
   <properties>
 
@@ -42,7 +42,7 @@
     </dependency>
 
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>      
     </dependency>
     

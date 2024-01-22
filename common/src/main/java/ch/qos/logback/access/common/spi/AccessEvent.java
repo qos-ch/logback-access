@@ -1,15 +1,13 @@
 /**
- * Logback: the reliable, generic, fast and flexible logging framework.
- * Copyright (C) 1999-2015, QOS.ch. All rights reserved.
+ * Logback: the reliable, generic, fast and flexible logging framework. Copyright (C) 1999-2015, QOS.ch. All rights
+ * reserved.
  *
- * This program and the accompanying materials are dual-licensed under
- * either the terms of the Eclipse Public License v1.0 as published by
- * the Eclipse Foundation
+ * This program and the accompanying materials are dual-licensed under either the terms of the Eclipse Public License
+ * v1.0 as published by the Eclipse Foundation
  *
- *   or (per the licensee's choosing)
+ * or (per the licensee's choosing)
  *
- * under the terms of the GNU Lesser General Public License version 2.1
- * as published by the Free Software Foundation.
+ * under the terms of the GNU Lesser General Public License version 2.1 as published by the Free Software Foundation.
  */
 package ch.qos.logback.access.common.spi;
 
@@ -36,8 +34,8 @@ import java.util.Vector;
 // Contributors:  Joern Huxhorn (see also bug #110)
 
 /**
- * The Access module's internal representation of logging events. When the
- * logging component instance is called in the container to log then a
+ * The Access module's internal representation of logging events. When the logging component instance is called in the
+ * container to log then a
  * <code>AccessEvent</code> instance is created. This instance is passed around
  * to the different logback components.
  *
@@ -82,8 +80,7 @@ public class AccessEvent implements Serializable, IAccessEvent {
     transient ServerAdapter serverAdapter;
 
     /**
-     * The number of milliseconds elapsed from 1/1/1970 until logging event was
-     * created.
+     * The number of milliseconds elapsed from 1/1/1970 until logging event was created.
      */
     private long timeStamp = 0;
 
@@ -104,8 +101,7 @@ public class AccessEvent implements Serializable, IAccessEvent {
     }
 
     /**
-     * Returns the underlying HttpServletRequest. After serialization the returned
-     * value will be null.
+     * Returns the underlying HttpServletRequest. After serialization the returned value will be null.
      *
      * @return
      */
@@ -115,8 +111,7 @@ public class AccessEvent implements Serializable, IAccessEvent {
     }
 
     /**
-     * Returns the underlying HttpServletResponse. After serialization the returned
-     * value will be null.
+     * Returns the underlying HttpServletResponse. After serialization the returned value will be null.
      *
      * @return
      */
@@ -189,19 +184,17 @@ public class AccessEvent implements Serializable, IAccessEvent {
      */
     @Override
     public String getRequestURL() {
-        if (requestURL == null) {
-            if (httpRequest != null) {
-                StringBuilder buf = new StringBuilder();
-                buf.append(httpRequest.getMethod());
-                buf.append(AccessConverter.SPACE_CHAR);
-                buf.append(httpRequest.getRequestURI());
-                buf.append(getQueryString());
-                buf.append(AccessConverter.SPACE_CHAR);
-                buf.append(httpRequest.getProtocol());
-                requestURL = buf.toString();
-            } else {
-                requestURL = NA;
-            }
+        if (httpRequest != null) {
+            StringBuilder buf = new StringBuilder();
+            buf.append(httpRequest.getMethod());
+            buf.append(AccessConverter.SPACE_CHAR);
+            buf.append(httpRequest.getRequestURI());
+            buf.append(getQueryString());
+            buf.append(AccessConverter.SPACE_CHAR);
+            buf.append(httpRequest.getProtocol());
+            requestURL = buf.toString();
+        } else {
+            requestURL = NA;
         }
         return requestURL;
     }
@@ -260,9 +253,14 @@ public class AccessEvent implements Serializable, IAccessEvent {
     public String getSessionID() {
         if (sessionID == null) {
             if (httpRequest != null) {
-                final HttpSession session = httpRequest.getSession(false);
-                if (session != null) {
-                    sessionID = session.getId();
+                if (httpRequest instanceof WrappedHttpRequest) {
+                    WrappedHttpRequest wrappedHttpRequest = (WrappedHttpRequest) httpRequest;
+                    sessionID = wrappedHttpRequest.getSessionID();
+                } else {
+                    final HttpSession session = httpRequest.getSession(false);
+                    if (session != null) {
+                        sessionID = session.getId();
+                    }
                 }
             } else {
                 sessionID = NA;
@@ -334,37 +332,49 @@ public class AccessEvent implements Serializable, IAccessEvent {
     }
 
     public void buildRequestHeaderMap() {
-        // according to RFC 2616 header names are case-insensitive
-        // latest versions of Tomcat return header names in lower-case
-        requestHeaderMap = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
-        Enumeration<String> e = httpRequest.getHeaderNames();
-        if (e == null) {
-            return;
-        }
-        while (e.hasMoreElements()) {
-            String key = e.nextElement();
-            requestHeaderMap.put(key, httpRequest.getHeader(key));
-        }
-    }
+        if (httpRequest instanceof WrappedHttpRequest) {
+            WrappedHttpRequest whr = (WrappedHttpRequest) httpRequest;
+            requestHeaderMap = whr.getRequestHeaderMap();
+        } else {
 
-    public void buildRequestParameterMap() {
-        requestParameterMap = new HashMap<String, String[]>();
-        try {
-            Enumeration<String> e = httpRequest.getParameterNames();
+            // according to RFC 2616 header names are case-insensitive
+            // latest versions of Tomcat return header names in lower-case
+            requestHeaderMap = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+            Enumeration<String> e = httpRequest.getHeaderNames();
             if (e == null) {
                 return;
             }
             while (e.hasMoreElements()) {
                 String key = e.nextElement();
-                requestParameterMap.put(key, httpRequest.getParameterValues(key));
+                requestHeaderMap.put(key, httpRequest.getHeader(key));
             }
-        } catch(Throwable t) {
-            // The use of HttpServletRequest.getParameterNames() can cause
-            // a READ of the Request body content.  This can fail with various
-            // Throwable failures depending on the state of the Request
-            // at the time this method is called.
-            // We don't want to fail the logging due to these types of requests
-            t.printStackTrace();
+        }
+    }
+
+    public void buildRequestParameterMap() {
+        if (httpRequest instanceof WrappedHttpRequest) {
+            WrappedHttpRequest whr = (WrappedHttpRequest) httpRequest;
+            requestParameterMap = whr.buildRequestParameterMap();
+        } else {
+
+            requestParameterMap = new HashMap<String, String[]>();
+            try {
+                Enumeration<String> e = httpRequest.getParameterNames();
+                if (e == null) {
+                    return;
+                }
+                while (e.hasMoreElements()) {
+                    String key = e.nextElement();
+                    requestParameterMap.put(key, httpRequest.getParameterValues(key));
+                }
+            } catch (Throwable t) {
+                // The use of HttpServletRequest.getParameterNames() can cause
+                // a READ of the Request body content.  This can fail with various
+                // Throwable failures depending on the state of the Request
+                // at the time this method is called.
+                // We don't want to fail the logging due to these types of requests
+                t.printStackTrace();
+            }
         }
     }
 

@@ -82,7 +82,7 @@ public class TeeFilter implements Filter {
 
     }
 
-    static List<String> extractNameList(String nameListAsStr) {
+    public static List<String> extractNameList(String nameListAsStr) {
         List<String> nameList = new ArrayList<String>();
         if (nameListAsStr == null) {
             return nameList;
@@ -112,7 +112,7 @@ public class TeeFilter implements Filter {
         return hostname;
     }
 
-    static boolean computeActivation(String hostname, String includeListAsStr, String excludeListAsStr) {
+    public static boolean computeActivation(String hostname, String includeListAsStr, String excludeListAsStr) {
         List<String> includeList = extractNameList(includeListAsStr);
         List<String> excludeList = extractNameList(excludeListAsStr);
         boolean inIncludesList = mathesIncludesList(hostname, includeList);

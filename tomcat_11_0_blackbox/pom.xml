@@ -6,15 +6,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>ch.qos.logback.access.jakarta</groupId>
+    <groupId>ch.qos.logback.access</groupId>
     <artifactId>parent</artifactId>
     <version>1.4.15-SNAPSHOT</version>
   </parent>
 
   <artifactId>tomcat_11_0_blackbox</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Tomcat 11.0 Blackbox Module</name>
-  <description>Logback Access Jakarta Tomcat 11.0 Blackbox module</description>
+  <name>Logback Access Tomcat 11.0 Blackbox Module</name>
+  <description>Logback Access Tomcat 11.0 Blackbox module</description>
 
   <properties>
 
@@ -71,12 +71,12 @@
     </dependency>
 
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>      
     </dependency>
     
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>      
       <version>${project.version}</version>      
       <type>test-jar</type>
@@ -84,7 +84,7 @@
 
 
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>tomcat</artifactId>
       <version>${project.version}</version>
     </dependency>

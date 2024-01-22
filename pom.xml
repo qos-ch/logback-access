@@ -5,13 +5,13 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ch.qos.logback.access.jakarta</groupId>
+  <groupId>ch.qos.logback.access</groupId>
   <artifactId>parent</artifactId>
   <version>1.4.15-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Logback-access-jakarta-parent</name>
-  <description>logback-access-jakarta project parent pom.xml file</description>
+  <name>Logback-Access Parent</name>
+  <description>logback-access project parent pom.xml file</description>
 
   <url>http://logback.qos.ch</url>
 
@@ -40,10 +40,11 @@
 
   <modules>
     <module>common</module>
+    <module>common-blackbox</module>
     <module>tomcat</module>
     <module>tomcat_10_1_blackbox</module>
     <module>tomcat_11_0_blackbox</module>
-    <module>jetty11</module>    
+    <module>jetty12</module>
   </modules>
 
   <properties>
@@ -68,13 +69,15 @@
     <jakarta.activation.version>2.1.0</jakarta.activation.version>
     <jakarta.angus-mail.version>1.0.0</jakarta.angus-mail.version>
 
-    <jakarta.servlet.version>5.0.0</jakarta.servlet.version>
+<!--    <jakarta.servlet.version>5.0.0</jakarta.servlet.version>-->
+    <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
     <greenmail.version>2.0.0-alpha-1</greenmail.version>
 
     <tomcat_10_0.version>10.0.27</tomcat_10_0.version>
     <tomcat_10_1.version>10.1.18</tomcat_10_1.version>
     <tomcat_11_0.version>11.0.0-M16</tomcat_11_0.version>
     <jetty11.version>11.0.12</jetty11.version>
+    <jetty12.version>12.0.5</jetty12.version>
     <jackson.version>2.15.0</jackson.version>
 
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
@@ -151,7 +154,7 @@
       </dependency>
 
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>
       <version>${project.version}</version>      
     </dependency>
@@ -314,19 +317,7 @@
 
   <reporting>
     <plugins>
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <aggregate>true</aggregate>
-          <javadocDir>target/site/apidocs/</javadocDir>
-          <linkJavadoc>true</linkJavadoc>
-        </configuration>
-      </plugin>
-      -->
-      
+
       
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

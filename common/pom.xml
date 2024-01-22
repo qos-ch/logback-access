@@ -6,15 +6,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>ch.qos.logback.access.jakarta</groupId>
+    <groupId>ch.qos.logback.access</groupId>
     <artifactId>parent</artifactId>
     <version>1.4.15-SNAPSHOT</version>
   </parent>
 
   <artifactId>common</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Common Module</name>
-  <description>Logback Access Jakarta Common module</description>
+  <name>Logback Access Common Module</name>
+  <description>Logback Access Common module</description>
 
   <properties>
   </properties>

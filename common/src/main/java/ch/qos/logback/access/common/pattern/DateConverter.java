@@ -22,6 +22,7 @@ import ch.qos.logback.core.util.CachingDateFormatter;
 
 public class DateConverter extends AccessConverter {
 
+
     CachingDateFormatter cachingDateFormatter = null;
 
     @Override
@@ -59,5 +60,15 @@ public class DateConverter extends AccessConverter {
     public String convert(IAccessEvent accessEvent) {
         long timestamp = accessEvent.getTimeStamp();
         return cachingDateFormatter.format(timestamp);
+    }
+
+    /**
+     * This method is intended for test classes. Should not be used
+     * by regular clients.
+     *
+     * @return the CachingDateFormatter in use
+     */
+    public CachingDateFormatter internalCachingDateFormatter() {
+        return cachingDateFormatter;
     }
 }
