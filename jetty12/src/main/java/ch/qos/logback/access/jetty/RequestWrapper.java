@@ -18,7 +18,11 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpUpgradeHandler;
 import jakarta.servlet.http.Part;
 import org.eclipse.jetty.http.HttpField;
+import org.eclipse.jetty.http.HttpScheme;
+import org.eclipse.jetty.http.HttpURI;
+import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Session;
 import org.eclipse.jetty.util.Fields;
 
 import java.io.BufferedReader;
@@ -34,11 +38,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import static ch.qos.logback.access.common.spi.IAccessEvent.NA;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
-    static String[] EMTPTY_STRING_ARRAY = new String[0];
+    static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     Request request;
     StringBuffer requestURL;
@@ -79,9 +84,9 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     }
 
     @Override
-    public Map<String, String> getRequestHeaderMap() {
+    public Map<String, String> buildRequestHeaderMap() {
         Map<String, String> requestHeaderMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        for(HttpField f: request.getHeaders()) {
+        for (HttpField f : request.getHeaders()) {
             requestHeaderMap.put(f.getName(), f.getValue());
         }
         return requestHeaderMap;
@@ -139,7 +144,10 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getRequestURI() {
-        return request.getHttpURI().getPath();
+
+        HttpURI.Mutable mutable = HttpURI.build(request.getHttpURI());
+        mutable.query(null);
+        return mutable.asString();
     }
 
     @Override
@@ -158,7 +166,12 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getSessionID() {
-        return request.getSession(false).getId();
+        Session session = request.getSession(false);
+        if (session == null) {
+            return NA;
+        } else {
+            return session.getId();
+        }
     }
 
     @Override
@@ -266,14 +279,9 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     public Map<String, String[]> buildRequestParameterMap() {
         Map<String, String[]> results = new HashMap<>();
         Fields allParameters = Request.extractQueryParameters(request, UTF_8);
-        for(Fields.Field field: allParameters) {
-            String[] EMPTY = new String[0];
-
-            results.put(field.getName(),  field.getValues().toArray(EMPTY));
-            field.getValues();
-
+        for (Fields.Field field : allParameters) {
+           results.put(field.getName(), field.getValues().toArray(EMPTY_STRING_ARRAY));
         }
-        //allParameters.stream().forEach(f -> results.put(f.getName(), f.));
         return results;
     }
 
@@ -304,7 +312,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getScheme() {
-        return null;
+        return request.getHttpURI().getScheme();
     }
 
     @Override
@@ -314,7 +322,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public int getServerPort() {
-        throw new UnsupportedOperationException();
+        return Request.getServerPort(request);
     }
 
     @Override
@@ -344,17 +352,17 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public Locale getLocale() {
-        return null;
+        return Request.getLocales(request).get(0);
     }
 
     @Override
     public Enumeration<Locale> getLocales() {
-        return null;
+        return Collections.enumeration(Request.getLocales(request));
     }
 
     @Override
     public boolean isSecure() {
-        return false;
+        return HttpScheme.HTTPS.is(request.getHttpURI().getScheme());
     }
 
     @Override
@@ -420,12 +428,18 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getRequestId() {
-        return null;
+        return request.getConnectionMetaData().getId() + "#" + request.getId();
     }
+
 
     @Override
     public String getProtocolRequestId() {
-        return null;
+       HttpVersion httpVersion = request.getConnectionMetaData().getHttpVersion();
+       if(httpVersion == HttpVersion.HTTP_2 || httpVersion == (HttpVersion.HTTP_3)) {
+           return request.getId();
+       } else {
+           return NA;
+       }
     }
 
     @Override

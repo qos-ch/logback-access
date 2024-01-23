@@ -334,7 +334,7 @@ public class AccessEvent implements Serializable, IAccessEvent {
     public void buildRequestHeaderMap() {
         if (httpRequest instanceof WrappedHttpRequest) {
             WrappedHttpRequest whr = (WrappedHttpRequest) httpRequest;
-            requestHeaderMap = whr.getRequestHeaderMap();
+            requestHeaderMap = whr.buildRequestHeaderMap();
         } else {
 
             // according to RFC 2616 header names are case-insensitive

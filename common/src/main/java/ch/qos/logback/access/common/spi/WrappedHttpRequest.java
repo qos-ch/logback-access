@@ -6,7 +6,7 @@ public interface WrappedHttpRequest {
 
     String getSessionID();
 
-    Map<String, String> getRequestHeaderMap();
+    Map<String, String> buildRequestHeaderMap();
 
     Map<String, String[]> buildRequestParameterMap();
 
