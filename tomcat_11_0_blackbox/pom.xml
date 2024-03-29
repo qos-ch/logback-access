@@ -101,11 +101,10 @@
       <artifactId>tomcat-coyote</artifactId>
       <version>${tomcat_11_0.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.10-SNAPSHOT</version>
-      <scope>compile</scope>
     </dependency>
 
   </dependencies>
@@ -122,6 +121,16 @@
           <disableXmlReport>true</disableXmlReport>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+
     </plugins>
   </build>
 

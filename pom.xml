@@ -53,7 +53,7 @@
     <project.build.outputTimestamp>2024-03-29T17:34:00Z</project.build.outputTimestamp>
 
     <logback.core.version>1.5.3</logback.core.version>
-
+    <slf4j.version>2.0.12</slf4j.version>
     <janino.version>3.1.8</janino.version>
 
     <!-- minimal JDK version at runtime -->
@@ -152,6 +152,12 @@
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logback.core.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
       </dependency>
 
     <dependency>
