@@ -53,6 +53,9 @@ public class SiftingAppenderTest {
     public void invokingDifferentPathShouldBeSiftedAccordingly() throws Exception {
         rli.setFileName(PREFIX + "sifting.xml");
         jettyFixture.start();
+
+        String prefix = "http://localhost:"+RANDOM_SERVER_PORT+"/";
+
         invokeServer("/");
         invokeServer("/x");
         invokeServer("/x");
@@ -64,14 +67,14 @@ public class SiftingAppenderTest {
         assertEquals(3, keySet.size());
 
         Set<String> witnessSet = new LinkedHashSet<String>();
-        witnessSet.add("NA");
-        witnessSet.add("x");
-        witnessSet.add("y");
+        witnessSet.add(prefix);
+        witnessSet.add(prefix+"x");
+        witnessSet.add(prefix+"y");
         assertEquals(witnessSet, keySet);
 
-        check(siftingAppender, "NA", 1);
-        check(siftingAppender, "x", 2);
-        check(siftingAppender, "y", 1);
+        check(siftingAppender, prefix, 1);
+        check(siftingAppender, prefix+"x", 2);
+        check(siftingAppender, prefix+"y", 1);
     }
 
     private void check(SiftingAppender siftingAppender, String key, int expectedCount) {

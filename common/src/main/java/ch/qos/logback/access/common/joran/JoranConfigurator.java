@@ -43,7 +43,7 @@ public class JoranConfigurator extends JoranConfiguratorBase<IAccessEvent> {
     @Override
     protected void addModelHandlerAssociations(DefaultProcessor defaultProcessor) {
 
-        ch.qos.logback.access.common.joran.ModelClassToModelHandlerLinker mham = new ch.qos.logback.access.common.joran.ModelClassToModelHandlerLinker(context);
+        ModelClassToModelHandlerLinker mham = new ModelClassToModelHandlerLinker(context);
         mham.link(defaultProcessor);
 
     }
