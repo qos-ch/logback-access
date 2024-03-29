@@ -7,7 +7,7 @@
 
   <groupId>ch.qos.logback.access</groupId>
   <artifactId>parent</artifactId>
-  <version>1.4.15-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Logback-Access Parent</name>
@@ -50,9 +50,9 @@
 
   <properties>
     <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
-    <project.build.outputTimestamp>2023-12-04T15:53:02Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-03-29T14:47:00Z</project.build.outputTimestamp>
 
-    <logback.core.version>1.4.15-SNAPSHOT</logback.core.version>
+    <logback.core.version>1.5.3</logback.core.version>
 
     <janino.version>3.1.8</janino.version>
 
