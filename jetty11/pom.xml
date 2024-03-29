@@ -22,13 +22,13 @@
   <dependencies>
 
     <dependency>      
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>      
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>
       <version>${project.version}</version>      
       <type>test-jar</type>

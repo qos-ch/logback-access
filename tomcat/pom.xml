@@ -13,7 +13,7 @@
 
   <artifactId>tomcat</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Jakarta Module</name>
+  <name>Logback Access Tomcat Module</name>
   <description>Logback Access Tomcat Module module</description>
 
   <properties>
@@ -47,7 +47,7 @@
     </dependency>
     
     <dependency>
-      <groupId>ch.qos.logback.access.jakarta</groupId>
+      <groupId>ch.qos.logback.access</groupId>
       <artifactId>common</artifactId>      
       <version>${project.version}</version>      
       <type>test-jar</type>
