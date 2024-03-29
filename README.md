@@ -7,4 +7,4 @@ Previously, part of the logback distribution, since March 2024 it resides in its
 
 Version 2.0.0 of logback-access supports Tomcat versions 10 and 11, and Jetty versions 11 and 12.
 
-For further documentaiton see https://logback.qos.ch/access.html.
+For further documentation see https://logback.qos.ch/access.html.
