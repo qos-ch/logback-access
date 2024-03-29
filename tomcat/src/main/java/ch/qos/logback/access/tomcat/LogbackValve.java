@@ -354,6 +354,11 @@ public class LogbackValve extends ValveBase
     }
 
     @Override
+    public void addSubstitutionProperty(String key, String value) {
+        this.propertyMap.put(key, value);
+    }
+
+    @Override
     public void putProperty(String key, String val) {
         this.propertyMap.put(key, val);
     }
