@@ -145,7 +145,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     @Override
     public String getRequestURI() {
 
-        HttpURI.Mutable mutable = HttpURI.build(request.getHttpURI());
+        HttpURI.Mutable mutable = HttpURI.build(request.getHttpURI().getDecodedPath());
         mutable.query(null);
         return mutable.asString();
     }

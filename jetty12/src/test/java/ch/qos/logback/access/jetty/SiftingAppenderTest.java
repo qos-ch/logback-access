@@ -38,7 +38,7 @@ public class SiftingAppenderTest {
     RequestLogImpl rli = new RequestLogImpl();
 
     @BeforeEach
-    public void startServer() throws Exception {
+    public void startServer() {
         jettyFixture = new JettyFixtureBase(rli, RANDOM_SERVER_PORT);
     }
 
@@ -66,15 +66,15 @@ public class SiftingAppenderTest {
         Set<String> keySet = siftingAppender.getAppenderTracker().allKeys();
         assertEquals(3, keySet.size());
 
-        Set<String> witnessSet = new LinkedHashSet<String>();
-        witnessSet.add(prefix);
-        witnessSet.add(prefix+"x");
-        witnessSet.add(prefix+"y");
+        Set<String> witnessSet = new LinkedHashSet<>();
+        witnessSet.add("NA");
+        witnessSet.add("x");
+        witnessSet.add("y");
         assertEquals(witnessSet, keySet);
 
-        check(siftingAppender, prefix, 1);
-        check(siftingAppender, prefix+"x", 2);
-        check(siftingAppender, prefix+"y", 1);
+        check(siftingAppender, "NA", 1);
+        check(siftingAppender, "x", 2);
+        check(siftingAppender, "y", 1);
     }
 
     private void check(SiftingAppender siftingAppender, String key, int expectedCount) {
