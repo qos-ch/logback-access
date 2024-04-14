@@ -68,7 +68,7 @@ public class JettyBasicTest {
 
     @Test
     public void eventGoesToAppenders() throws Exception {
-        URL url = new URL(JETTY_FIXTURE.getUrl());
+        URL url = new URL("http://localhost:" + RANDOM_SERVER_PORT + "/path/foo%20bar;param?query#fragment");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoInput(true);
 
@@ -82,6 +82,7 @@ public class JettyBasicTest {
 
         assertEquals("127.0.0.1", event.getRemoteHost());
         assertEquals("localhost", event.getServerName());
+        assertEquals("/path/foo%20bar;param", event.getRequestURI());
         listAppender.list.clear();
     }
 
