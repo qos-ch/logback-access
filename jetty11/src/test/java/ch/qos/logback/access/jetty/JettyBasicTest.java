@@ -68,7 +68,7 @@ public class JettyBasicTest {
 
     @Test
     public void eventGoesToAppenders() throws Exception {
-        URL url = new URL("http://localhost:" + RANDOM_SERVER_PORT + "/path/foo%20bar;param?query#fragment");
+        URL url = new URL(JETTY_FIXTURE.getUrl() + "path/foo%20bar;param?query#fragment");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoInput(true);
 
