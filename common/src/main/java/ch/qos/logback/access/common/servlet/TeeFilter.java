@@ -43,29 +43,20 @@ public class TeeFilter implements Filter {
             throws IOException, ServletException {
 
         if (active && request instanceof HttpServletRequest) {
+            TeeHttpServletRequest teeRequest = new TeeHttpServletRequest((HttpServletRequest) request);
+            TeeHttpServletResponse teeResponse = new TeeHttpServletResponse((HttpServletResponse) response);
+
             try {
-                TeeHttpServletRequest teeRequest = new TeeHttpServletRequest((HttpServletRequest) request);
-                TeeHttpServletResponse teeResponse = new TeeHttpServletResponse((HttpServletResponse) response);
-
-                // System.out.println("BEFORE TeeFilter. filterChain.doFilter()");
                 filterChain.doFilter(teeRequest, teeResponse);
-                // System.out.println("AFTER TeeFilter. filterChain.doFilter()");
-
+            } finally {
                 teeResponse.finish();
                 // let the output contents be available for later use by
                 // logback-access-logging
                 teeRequest.setAttribute(AccessConstants.LB_OUTPUT_BUFFER, teeResponse.getOutputBuffer());
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw e;
-            } catch (ServletException e) {
-                e.printStackTrace();
-                throw e;
             }
         } else {
             filterChain.doFilter(request, response);
         }
-
     }
 
     @Override
@@ -76,9 +67,9 @@ public class TeeFilter implements Filter {
 
         active = computeActivation(localhostName, includeListAsStr, excludeListAsStr);
         if (active)
-            System.out.println("TeeFilter will be ACTIVE on this host [" + localhostName + "]");
+            logInfo("TeeFilter will be ACTIVE on this host [" + localhostName + "]");
         else
-            System.out.println("TeeFilter will be DISABLED on this host [" + localhostName + "]");
+            logInfo("TeeFilter will be DISABLED on this host [" + localhostName + "]");
 
     }
 
@@ -101,13 +92,13 @@ public class TeeFilter implements Filter {
         return nameList;
     }
 
-    static String getLocalhostName() {
+    String getLocalhostName() {
         String hostname = "127.0.0.1";
 
         try {
             hostname = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException uhe) {
-            uhe.printStackTrace();
+            logWarn("Unknown host", uhe);
         }
         return hostname;
     }
@@ -132,4 +123,26 @@ public class TeeFilter implements Filter {
         return excludesList.contains(hostname);
     }
 
+    /**
+     * Log a warning.
+     *
+     * Can be overwritten to use a logger.
+     *
+     * @param msg The message.
+     * @param ex The exception.
+     */
+    protected void logWarn(String msg, Throwable ex) {
+        System.err.println(msg + ": " + ex);
+    }
+
+    /**
+     * Log an info message.
+     *
+     * Can be overwritten to use a logger.
+     *
+     * @param msg The message to log.
+     */
+    protected void logInfo(String msg) {
+        System.out.println(msg);
+    }
 }
