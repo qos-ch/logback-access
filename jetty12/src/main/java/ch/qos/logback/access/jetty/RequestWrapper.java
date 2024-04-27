@@ -1,7 +1,6 @@
 package ch.qos.logback.access.jetty;
 
 import ch.qos.logback.access.common.spi.WrappedHttpRequest;
-import ch.qos.logback.core.CoreConstants;
 import jakarta.servlet.AsyncContext;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.RequestDispatcher;
@@ -30,7 +29,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -40,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import static ch.qos.logback.access.common.spi.IAccessEvent.NA;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -63,7 +62,8 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     @Override
     public Cookie[] getCookies() {
         List<HttpCookie> httpCookies = Request.getCookies(request);
-        List<Cookie> cookieList = httpCookies.stream().map(httpCookie -> new Cookie(httpCookie.getName(), httpCookie.getValue())).toList();
+        List<Cookie> cookieList = httpCookies.stream().map(httpCookie -> new Cookie(httpCookie.getName(), httpCookie.getValue())).collect(
+                Collectors.toList());
 
         return (Cookie[]) cookieList.toArray();
     }
@@ -378,7 +378,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public int getRemotePort() {
-        return 0;
+        return Request.getRemotePort(request);
     }
 
     @Override
@@ -388,12 +388,12 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getLocalAddr() {
-        return null;
+        return Request.getLocalAddr(request);
     }
 
     @Override
     public int getLocalPort() {
-        return 0;
+        return Request.getLocalPort(request);
     }
 
     @Override
