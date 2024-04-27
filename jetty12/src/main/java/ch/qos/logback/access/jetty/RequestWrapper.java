@@ -48,7 +48,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     Request request;
     StringBuffer requestURL;
 
-    RequestWrapper(Request request) {
+    public RequestWrapper(Request request) {
         this.request = request;
     }
 
