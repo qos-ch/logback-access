@@ -15,6 +15,7 @@ package ch.qos.logback.access.common.spi;
 
 import ch.qos.logback.core.spi.DeferredProcessingAware;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
@@ -24,10 +25,15 @@ import java.util.Map;
 // Contributors:  Joern Huxhorn (see also bug #110)
 
 /**
- * The Access module's internal representation of logging events. When the
- * logging component instance is called in the container to log then a
- * <code>AccessEvent</code> instance is created. This instance is passed around
+ * <p>This class is the internal representation of events to be logged.
+ * </p>
+ *
+ * <p>When the HTTP container wishes to log an HTTP access event, then
+ * an instance of this class is created. This instance is passed around
  * to the different logback components.
+ * </p>
+ *
+ * <p>Put differently, the logback-access project revolves around this interface.</p>
  *
  * @author Ceki G&uuml;lc&uuml;
  * @author S&eacute;bastien Pennec
@@ -120,6 +126,21 @@ public interface IAccessEvent extends DeferredProcessingAware {
     String getAttribute(String key);
 
     String[] getRequestParameter(String key);
+
+    /**
+     * <p>Return a list of cookies in the httpRequest. The list is immutable and is created if
+     * it did not exist previously.
+     * </p>
+     *
+     * <p>The default implementation returns an immutable empty list.
+     * </p>
+     *
+     * @return an immutable list of cookies in the httpRequest, the returned list can be empty but not null
+     * @since version 2.0.2
+     */
+    default List<Cookie> getCookies() {
+       return  List.of();
+    }
 
     String getCookie(String key);
 

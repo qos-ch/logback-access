@@ -4,13 +4,16 @@ import ch.qos.logback.access.common.blackbox.dummy.DummyAccessEventBuilder;
 import ch.qos.logback.access.common.blackbox.dummy.DummyRequest;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.core.testUtil.RandomUtil;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AccessEventTest {
 
@@ -51,6 +54,26 @@ public class AccessEventTest {
         assertEquals(val, ae.getRequestHeader(key));
         assertEquals(val, ae.getRequestParameter(key)[0]);
 
+    }
+
+    @Test
+    void cookiesListTest() throws Exception {
+        IAccessEvent ae = DummyAccessEventBuilder.buildNewAccessEvent();
+        List<Cookie> cookiesList = ae.getCookies();
+        assertEquals(1, cookiesList.size());
+        Cookie cookie = new Cookie("testName", "testCookie");
+        assertEquals(cookie, cookiesList.get(0));
+    }
+
+    @Test
+    void cookiesEmptyListTest() throws Exception {
+        DummyAccessEventBuilder dummyAccessEventBuilder = new DummyAccessEventBuilder();
+        DummyRequest dummyRequest = new DummyRequest();
+        dummyRequest.setCookies(null);
+        dummyAccessEventBuilder.setRequest(dummyRequest);
+        IAccessEvent ae = dummyAccessEventBuilder.build();
+        List<Cookie> cookiesList = ae.getCookies();
+        assertTrue(cookiesList.isEmpty());
     }
 
 }

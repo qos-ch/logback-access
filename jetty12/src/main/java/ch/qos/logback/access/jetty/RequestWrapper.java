@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpUpgradeHandler;
 import jakarta.servlet.http.Part;
+import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpURI;
@@ -29,10 +30,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -59,7 +62,10 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public Cookie[] getCookies() {
-        return new Cookie[0];
+        List<HttpCookie> httpCookies = Request.getCookies(request);
+        List<Cookie> cookieList = httpCookies.stream().map(httpCookie -> new Cookie(httpCookie.getName(), httpCookie.getValue())).toList();
+
+        return (Cookie[]) cookieList.toArray();
     }
 
     @Override

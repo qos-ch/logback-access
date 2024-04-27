@@ -34,10 +34,9 @@ import java.util.Vector;
 // Contributors:  Joern Huxhorn (see also bug #110)
 
 /**
- * The Access module's internal representation of logging events. When the logging component instance is called in the
- * container to log then a
- * <code>AccessEvent</code> instance is created. This instance is passed around
- * to the different logback components.
+ * <p>This class is the implementation of the {@link IAccessEvent} interface.</p>
+ *
+ * <p>Much of the processing done by the logack-access project revolves around this class.</p>
  *
  * @author Ceki G&uuml;lc&uuml;
  * @author S&eacute;bastien Pennec
@@ -72,6 +71,8 @@ public class AccessEvent implements Serializable, IAccessEvent {
     Map<String, String[]> requestParameterMap;
     Map<String, String> responseHeaderMap;
     Map<String, Object> attributeMap;
+
+    List<Cookie> cookieList;
 
     long contentLength = SENTINEL;
     int statusCode = SENTINEL;
@@ -454,22 +455,33 @@ public class AccessEvent implements Serializable, IAccessEvent {
         return (value != null) ? value : NA_STRING_ARRAY;
     }
 
+    /**
+     * Return the list of cookies in the httpRequest. The list is created if it did not exist previously.
+     *
+     * @return a list of cookies in the httpRequest, the returned list can be empty but not null
+     * @since version 2.0.2
+     */
+    public List<Cookie> getCookies() {
+
+        if (cookieList != null)
+            return cookieList;
+
+        if (httpRequest == null) {
+            cookieList = List.of();
+            return cookieList;
+        }
+
+        Cookie[] cookieArray = httpRequest.getCookies();
+
+        this.cookieList = cookieArray !=null ? List.of(cookieArray) : List.of();
+        return this.cookieList;
+    }
+
     @Override
     public String getCookie(String key) {
-
-        if (httpRequest != null) {
-            Cookie[] cookieArray = httpRequest.getCookies();
-            if (cookieArray == null) {
-                return NA;
-            }
-
-            for (Cookie cookie : cookieArray) {
-                if (key.equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return NA;
+        List<Cookie> cookies = getCookies();
+        Cookie matchingCookie = cookies.stream().filter(c -> c.getName().equals(key)).findFirst().orElse(null);
+        return matchingCookie != null ? matchingCookie.getValue() : NA;
     }
 
     @Override
@@ -635,6 +647,8 @@ public class AccessEvent implements Serializable, IAccessEvent {
         getServerName();
         getTimeStamp();
         getElapsedTime();
+
+        getCookies();
 
         getStatusCode();
         getContentLength();

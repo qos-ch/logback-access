@@ -36,6 +36,9 @@ public class DummyRequest implements HttpServletRequest {
     Hashtable<String, String> headerMap;
     Hashtable<String, String[]> parameterMap;
 
+    Cookie[] cookiesArray;
+
+
     String uri;
     Map<String, Object> attributes;
 
@@ -54,6 +57,9 @@ public class DummyRequest implements HttpServletRequest {
         parameterMap.put("param1", new String[] { "value1" });
 
         attributes = new HashMap<String, Object>(DUMMY_DEFAULT_ATTR_MAP);
+
+        Cookie cookie = new Cookie("testName", "testCookie");
+        cookiesArray = new Cookie[] { cookie };
     }
 
     public String getAuthType() {
@@ -65,8 +71,11 @@ public class DummyRequest implements HttpServletRequest {
     }
 
     public Cookie[] getCookies() {
-        Cookie cookie = new Cookie("testName", "testCookie");
-        return new Cookie[] { cookie };
+        return cookiesArray;
+    }
+
+    public void setCookies(Cookie[] cookiesArray) {
+        this.cookiesArray = cookiesArray;
     }
 
     public long getDateHeader(String arg0) {
