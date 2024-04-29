@@ -45,6 +45,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
+    static final Cookie[] EMPTY_COOKIE_ARRAY = new Cookie[0];
     static final String[] EMPTY_STRING_ARRAY = new String[0];
 
     Request request;
@@ -65,7 +66,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
         List<Cookie> cookieList = httpCookies.stream().map(httpCookie -> new Cookie(httpCookie.getName(), httpCookie.getValue())).collect(
                 Collectors.toList());
 
-        return (Cookie[]) cookieList.toArray();
+        return  cookieList.toArray(EMPTY_COOKIE_ARRAY);
     }
 
     @Override

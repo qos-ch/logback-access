@@ -17,14 +17,18 @@ import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.access.common.spi.Util;
 import ch.qos.logback.access.common.testUtil.NotifyingListAppender;
 import ch.qos.logback.core.testUtil.RandomUtil;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,9 +74,14 @@ public class JettyBasicTest {
     public void eventGoesToAppenders() throws Exception {
         URL url = new URL(JETTY_FIXTURE.getUrl() + "path/foo%20bar;param?query#fragment");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.addRequestProperty("Cookie", "k0=v0");
+        connection.addRequestProperty("Cookie", "k1=v1");
         connection.setDoInput(true);
+        InputStream inputStream = connection.getInputStream();
+        String result = Util.readToString(inputStream);
 
-        String result = Util.readToString(connection.getInputStream());
+        close(inputStream);
+        connection.disconnect();
 
         assertEquals("hello world", result);
 
@@ -83,8 +92,28 @@ public class JettyBasicTest {
         assertEquals("127.0.0.1", event.getRemoteHost());
         assertEquals("localhost", event.getServerName());
         assertEquals("/path/foo%20bar;param", event.getRequestURI());
+        List<Cookie> cookies =  event.getCookies();
+        assertNotNull(cookies);
+
+        assertEquals(2, cookies.size());
+        for(int i = 0; i < 2 ; i++) {
+            assertEquals("k" + i, cookies.get(i).getName());
+            assertEquals("v" + i, cookies.get(i).getValue());
+        }
+
         listAppender.list.clear();
     }
+
+    private void close(InputStream inputStream) {
+        if(inputStream != null) {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 
     @Test
     public void postContentConverter() throws Exception {

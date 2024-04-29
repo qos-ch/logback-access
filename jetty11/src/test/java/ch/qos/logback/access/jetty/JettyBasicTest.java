@@ -65,7 +65,6 @@ public class JettyBasicTest {
         //REQUEST_LOG_IMPL.detachAndStopAllAppenders();
     }
 
-    @Disabled
     @Test
     public void getRequest() throws Exception {
         URL url = new URL("http://localhost:" + RANDOM_SERVER_PORT + "/");
@@ -124,7 +123,6 @@ public class JettyBasicTest {
         }
     }
 
-    @Disabled
     @Test
     public void postContentConverter() throws Exception {
         URL url = new URL(JETTY_FIXTURE_URL_STR);
