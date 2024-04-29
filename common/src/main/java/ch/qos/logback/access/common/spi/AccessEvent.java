@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -472,8 +473,7 @@ public class AccessEvent implements Serializable, IAccessEvent {
         }
 
         Cookie[] cookieArray = httpRequest.getCookies();
-
-        this.cookieList = cookieArray !=null ? List.of(cookieArray) : List.of();
+        this.cookieList = (cookieArray != null ? List.of(cookieArray) : List.of());
         return this.cookieList;
     }
 
