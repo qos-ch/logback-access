@@ -10,8 +10,6 @@ import org.apache.catalina.startup.Tomcat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -21,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmbeddedTomcatTest {
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
     Tomcat tomcat = new Tomcat();
     Server server = tomcat.getServer();
     int port = 8888;
