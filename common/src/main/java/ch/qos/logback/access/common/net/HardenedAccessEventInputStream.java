@@ -5,11 +5,12 @@ import java.io.InputStream;
 
 import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.core.net.HardenedObjectInputStream;
+import jakarta.servlet.http.Cookie;
 
 public class HardenedAccessEventInputStream extends HardenedObjectInputStream {
 
     public HardenedAccessEventInputStream(InputStream in) throws IOException {
-        super(in, new String[] { AccessEvent.class.getName(), String[].class.getName() });
+        super(in, new String[] { AccessEvent.class.getName(), String[].class.getName(), Cookie.class.getName() });
     }
 
 }
