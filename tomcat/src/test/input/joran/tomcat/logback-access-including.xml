@@ -1,0 +1,27 @@
+<!--
+  ~ Logback: the reliable, generic, fast and flexible logging framework.
+  ~ Copyright (C) 1999-2024, QOS.ch. All rights reserved.
+  ~
+  ~ This program and the accompanying materials are dual-licensed under
+  ~ either the terms of the Eclipse Public License v1.0 as published by
+  ~ the Eclipse Foundation
+  ~
+  ~    or (per the licensee's choosing)
+  ~
+  ~ under the terms of the GNU Lesser General Public License version 2.1
+  ~ as published by the Free Software Foundation.
+  -->
+
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+
+    <include file="${catalina.base}/logback-access-included.xml"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%h %l %u %user %date "%r" %s %b</pattern>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="STDOUT" />
+</configuration>

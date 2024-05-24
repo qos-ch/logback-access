@@ -20,6 +20,7 @@ import org.apache.catalina.core.ContainerBase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class LogbackValveTest {
@@ -47,6 +48,20 @@ public class LogbackValveTest {
         final String fileName = "logback-access.xml";
         setupValve(fileName);
         valve.start();
+
+        checker.assertContainsMatch("Found configuration file");
+        checker.assertContainsMatch("Done configuring");
+        checker.assertIsErrorFree();
+    }
+    @Test
+    public void fileUnderCatalinaBaseWithInclusionsShouldBeFound() throws LifecycleException {
+        System.setProperty(LogbackValve.CATALINA_BASE_KEY, TomcatTestContants.JORAN_INPUT_PREFIX + "tomcat/");
+        final String fileName = "logback-access-including.xml";
+        setupValve(fileName);
+        valve.start();
+
+        assertEquals("value_of_var_tomcat_inclusion", System.getProperty("var_tomcat_inclusion"));
+
         checker.assertContainsMatch("Found configuration file");
         checker.assertContainsMatch("Done configuring");
         checker.assertIsErrorFree();
