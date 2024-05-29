@@ -1,5 +1,6 @@
 package ch.qos.logback.access.tomcat_11_0;
 
+import ch.qos.logback.access.common.servlet.TeeFilter;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.access.tomcat.LogbackValve;
 import org.apache.catalina.Context;
@@ -7,6 +8,8 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Server;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.tomcat.util.descriptor.web.FilterDef;
+import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +34,6 @@ public class EmbeddedTomcatTest {
 
     @BeforeEach
     public void embed() throws LifecycleException {
-
         tomcat.setBaseDir("/tmp");
         //tomcat.setPort(port);
         Connector connector = tomcat.getConnector();
@@ -40,6 +42,16 @@ public class EmbeddedTomcatTest {
         String contextPath = "";
         String docBase = new File(".").getAbsolutePath();
         Context context = tomcat.addContext(contextPath, docBase);
+        FilterDef filterDef = new FilterDef();
+        filterDef.setFilterName(TeeFilter.class.getSimpleName());
+        filterDef.setFilterClass(TeeFilter.class.getName());
+        context.addFilterDef(filterDef);
+
+        FilterMap myFilterMap = new FilterMap();
+        myFilterMap.setFilterName(TeeFilter.class.getSimpleName());
+        myFilterMap.addURLPattern("/*");
+        context.addFilterMap(myFilterMap);
+
         String servletName = "SampleServlet";
         String urlPattern = "/*";
 
