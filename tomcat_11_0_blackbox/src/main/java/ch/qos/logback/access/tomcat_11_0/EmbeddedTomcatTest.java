@@ -1,6 +1,6 @@
 package ch.qos.logback.access.tomcat_11_0;
 
-import ch.qos.logback.access.common.HttpGetUtil;
+import ch.qos.logback.access.common.testUtil.HttpGetUtil;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.access.tomcat.LogbackValve;
 import ch.qos.logback.core.testUtil.RandomUtil;
@@ -85,7 +85,7 @@ public class EmbeddedTomcatTest {
     @Test
     public void cookies() throws MalformedURLException, InterruptedException {
         String uri = "/cookies";
-        ch.qos.logback.access.common.HttpGetUtil hgu = new ch.qos.logback.access.common.HttpGetUtil("http://127.0.0.1:" + port + uri);
+        HttpGetUtil hgu = new HttpGetUtil("http://127.0.0.1:" + port + uri);
         hgu.init().addCookie("k0=v0").addCookie("k1=v1").connect();
 
         String response = hgu.readResponse();

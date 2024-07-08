@@ -13,7 +13,7 @@
  */
 package ch.qos.logback.access.jetty;
 
-import ch.qos.logback.access.common.HttpGetUtil;
+import ch.qos.logback.access.common.testUtil.HttpGetUtil;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.access.common.spi.Util;
 import ch.qos.logback.access.common.testUtil.NotifyingListAppender;

@@ -12,7 +12,7 @@
  * as published by the Free Software Foundation.
  */
 
-package ch.qos.logback.access.common;
+package ch.qos.logback.access.common.testUtil;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
