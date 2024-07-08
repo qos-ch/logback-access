@@ -23,6 +23,7 @@ public class NotifyingListAppender extends AppenderBase<IAccessEvent> {
     public final LinkedBlockingQueue<IAccessEvent> list = new LinkedBlockingQueue<IAccessEvent>();
 
     protected void append(IAccessEvent e) {
+        e.prepareForDeferredProcessing();
         list.add(e);
     }
 }

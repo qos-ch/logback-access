@@ -1,4 +1,4 @@
-/**
+/*
  * Logback: the reliable, generic, fast and flexible logging framework.
  * Copyright (C) 1999-2024, QOS.ch. All rights reserved.
  *
@@ -6,16 +6,22 @@
  * either the terms of the Eclipse Public License v1.0 as published by
  * the Eclipse Foundation
  *
- *   or (per the licensee's choosing)
+ *    or (per the licensee's choosing)
  *
  * under the terms of the GNU Lesser General Public License version 2.1
  * as published by the Free Software Foundation.
  */
-package ch.qos.logback.access.common;
 
-public class AccessTestConstants {
+package ch.qos.logback.access.jetty;
 
-    public static final String TEST_DIR_PREFIX = "src/test/";
-    final static public String INPUT_PREFIX = "src/test/input/";
-    final static public String JORAN_INPUT_PREFIX = INPUT_PREFIX + "joran/";
+import org.eclipse.jetty.util.component.LifeCycle;
+import org.eclipse.jetty.util.component.LifeCycle.Listener;
+
+public class LCListener implements Listener {
+
+    @Override
+    public void lifeCycleStarted(LifeCycle event) {
+        boolean isStarted = event.isStarted();
+        System.out.println("isStarted="+isStarted);
+    }
 }

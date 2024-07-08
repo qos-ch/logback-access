@@ -13,13 +13,14 @@
  */
 package ch.qos.logback.access.jetty;
 
+import ch.qos.logback.access.common.HttpGetUtil;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.access.common.spi.Util;
 import ch.qos.logback.access.common.testUtil.NotifyingListAppender;
 import ch.qos.logback.core.testUtil.RandomUtil;
 import jakarta.servlet.http.Cookie;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -34,23 +35,32 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class JettyBasicTest {
-
-    static RequestLogImpl REQUEST_LOG_IMPL;
-    static JettyFixtureWithListAndConsoleAppenders JETTY_FIXTURE;
+public class Jetty12BasicTest {
 
     private static final int TIMEOUT = 5;
-    static int RANDOM_SERVER_PORT = RandomUtil.getRandomServerPort();
 
-    @BeforeAll
-    static public void startServer() throws Exception {
+
+    RequestLogImpl REQUEST_LOG_IMPL = new RequestLogImpl();
+    JettyFixtureWithListAndConsoleAppenders JETTY_FIXTURE;
+    String JETTY_FIXTURE_URL_STR;
+
+    int RANDOM_SERVER_PORT = RandomUtil.getRandomServerPort();
+    HttpGetUtil httpGetUtil;
+
+    @BeforeEach
+    public void startServer() throws Exception {
         REQUEST_LOG_IMPL = new RequestLogImpl();
         JETTY_FIXTURE = new JettyFixtureWithListAndConsoleAppenders(REQUEST_LOG_IMPL, RANDOM_SERVER_PORT);
         JETTY_FIXTURE.start();
+        JETTY_FIXTURE_URL_STR = JETTY_FIXTURE.getUrl();
     }
 
-    @AfterAll
-    static public void stopServer() throws Exception {
+    @AfterEach
+    public void stopServer() throws Exception {
+        if(this.httpGetUtil != null) {
+            this.httpGetUtil.disconnect();
+        }
+
         if (JETTY_FIXTURE != null) {
             JETTY_FIXTURE.stop();
         }
@@ -72,16 +82,13 @@ public class JettyBasicTest {
 
     @Test
     public void eventGoesToAppenders() throws Exception {
-        URL url = new URL(JETTY_FIXTURE.getUrl() + "path/foo%20bar;param?query#fragment");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.addRequestProperty("Cookie", "k0=v0");
-        connection.addRequestProperty("Cookie", "k1=v1");
-        connection.setDoInput(true);
-        InputStream inputStream = connection.getInputStream();
-        String result = Util.readToString(inputStream);
+        HttpGetUtil httpGetUtil = new HttpGetUtil(JETTY_FIXTURE_URL_STR + "path/foo%20bar;param?query#fragment");
+        httpGetUtil = httpGetUtil.init().addCookie("k0=v0").addCookie("k1=v1");
+        httpGetUtil.connect();
 
-        close(inputStream);
-        connection.disconnect();
+        String result = httpGetUtil.readResponse();
+
+
 
         assertEquals("hello world", result);
 
@@ -102,6 +109,7 @@ public class JettyBasicTest {
         }
 
         listAppender.list.clear();
+        httpGetUtil.disconnect();
     }
 
     private void close(InputStream inputStream) {

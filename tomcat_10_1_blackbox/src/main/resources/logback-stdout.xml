@@ -1,7 +1,8 @@
 <configuration>
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
 
-    <appender name="LIST" class="ch.qos.logback.access.jakarta.tomcat_10_1.ListAppender"/>
+
+    <appender name="LIST" class="ch.qos.logback.access.tomcat_10_1.ListAppender"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%h %l %u %user %date "%r" %s %b</pattern>

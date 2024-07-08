@@ -13,16 +13,15 @@
  */
 package ch.qos.logback.access.jetty;
 
+import ch.qos.logback.access.common.HttpGetUtil;
 import ch.qos.logback.access.common.spi.IAccessEvent;
-import ch.qos.logback.access.common.spi.Util;
 import ch.qos.logback.access.common.testUtil.NotifyingListAppender;
 import ch.qos.logback.core.testUtil.RandomUtil;
 import jakarta.servlet.http.Cookie;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,47 +32,53 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static ch.qos.logback.access.jetty.JettyFixtureBase.HELLO_WORLD_MSG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class JettyBasicTest {
+public class Jetty11BasicTest {
 
-    static RequestLogImpl REQUEST_LOG_IMPL;
-    static JettyFixtureWithListAndConsoleAppenders JETTY_FIXTURE;
+    private static final int TIMEOUT_IN_SECONDS = 3;
 
-    private static final int TIMEOUT = 5;
-    static int RANDOM_SERVER_PORT = RandomUtil.getRandomServerPort();
-    static String JETTY_FIXTURE_URL_STR;
+    RequestLogImpl REQUEST_LOG_IMPL;
+    JettyFixtureWithListAndConsoleAppenders JETTY_FIXTURE;
+    String JETTY_FIXTURE_URL_STR;
 
-    @BeforeAll
-    static public void startServer() throws Exception {
+    int RANDOM_SERVER_PORT = RandomUtil.getRandomServerPort();
+    HttpGetUtil httpGetUtil;
+
+    @BeforeEach
+    @Timeout(value = TIMEOUT_IN_SECONDS, unit = TimeUnit.SECONDS)
+    public void startServer() throws Exception {
         REQUEST_LOG_IMPL = new RequestLogImpl();
         JETTY_FIXTURE = new JettyFixtureWithListAndConsoleAppenders(REQUEST_LOG_IMPL, RANDOM_SERVER_PORT);
         JETTY_FIXTURE.start();
+
         JETTY_FIXTURE_URL_STR = JETTY_FIXTURE.getUrl();
+        Thread.sleep(100);
+
     }
 
-    @AfterAll
-    static public void stopServer() throws Exception {
+    @AfterEach
+    public void stopServer() throws Exception {
+        if(this.httpGetUtil != null) {
+            this.httpGetUtil.disconnect();
+        }
+
         if (JETTY_FIXTURE != null) {
             JETTY_FIXTURE.stop();
         }
     }
 
-    @AfterEach
-    public void tearDown() {
-        //REQUEST_LOG_IMPL.detachAndStopAllAppenders();
-    }
-
     @Test
     public void getRequest() throws Exception {
-        URL url = new URL("http://localhost:" + RANDOM_SERVER_PORT + "/");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoInput(true);
+        this.httpGetUtil = new HttpGetUtil("http://localhost:" + RANDOM_SERVER_PORT + "/");
+        this.httpGetUtil = this.httpGetUtil.init();
+        this.httpGetUtil.connect();
 
-        String result = Util.readToString(connection.getInputStream());
+        String result = this.httpGetUtil.readResponse();
 
-        assertEquals("hello world", result);
+        assertEquals(HELLO_WORLD_MSG, result);
 
         NotifyingListAppender listAppender = (NotifyingListAppender) REQUEST_LOG_IMPL.getAppender("list");
         listAppender.list.clear();
@@ -81,20 +86,18 @@ public class JettyBasicTest {
 
     @Test
     public void eventGoesToAppenders() throws Exception {
-        URL url = new URL(JETTY_FIXTURE_URL_STR + "path/foo%20bar;param?query#fragment");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        //connection.addRequestProperty("Cookie", "k0=v0; k1=v1");
-        connection.addRequestProperty("Cookie", "k0=v0");
-        connection.addRequestProperty("Cookie", "k1=v1");
-        InputStream inputStream = connection.getInputStream();
-        String result = Util.readToString(inputStream);
-        close(inputStream);
-        connection.disconnect();
 
-        assertEquals("hello world", result);
+        this.httpGetUtil = new HttpGetUtil(JETTY_FIXTURE_URL_STR + "path/foo%20bar;param?query#fragment");
+        this.httpGetUtil = httpGetUtil.init().addCookie("k0=v0; k1=v1");
+        this.httpGetUtil.connect();
+
+        String result = this.httpGetUtil.readResponse();
+
+
+        assertEquals(HELLO_WORLD_MSG, result);
 
         NotifyingListAppender listAppender = (NotifyingListAppender) REQUEST_LOG_IMPL.getAppender("list");
-        IAccessEvent event = listAppender.list.poll(TIMEOUT, TimeUnit.SECONDS);
+        IAccessEvent event = listAppender.list.poll(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
         assertNotNull(event, "No events received");
 
         assertEquals("127.0.0.1", event.getRemoteHost());
@@ -104,6 +107,9 @@ public class JettyBasicTest {
         List<Cookie> cookies =  event.getCookies();
         assertNotNull(cookies);
 
+        System.out.println("---------------------");
+        cookies.stream().forEach(System.out::println);
+        System.out.println("---------------------");
         assertEquals(2, cookies.size());
         for(int i = 0; i < 2 ; i++) {
             assertEquals("k" + i, cookies.get(i).getName());
@@ -111,6 +117,7 @@ public class JettyBasicTest {
         }
 
         listAppender.list.clear();
+
     }
 
     private void close(InputStream inputStream) {
@@ -147,7 +154,7 @@ public class JettyBasicTest {
 
         NotifyingListAppender listAppender = (NotifyingListAppender) REQUEST_LOG_IMPL.getAppender("list");
 
-        IAccessEvent event = listAppender.list.poll(TIMEOUT, TimeUnit.SECONDS);
+        IAccessEvent event = listAppender.list.poll(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS);
         assertNotNull(event, "No events received");
 
         // we should test the contents of the requests

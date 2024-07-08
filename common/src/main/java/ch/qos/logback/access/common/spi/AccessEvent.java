@@ -186,14 +186,17 @@ public class AccessEvent implements Serializable, IAccessEvent {
      */
     @Override
     public String getRequestURL() {
+        if(requestURL != null)
+            return requestURL;
+
         if (httpRequest != null) {
             StringBuilder buf = new StringBuilder();
-            buf.append(httpRequest.getMethod());
+            buf.append(getMethod());
             buf.append(AccessConverter.SPACE_CHAR);
-            buf.append(httpRequest.getRequestURI());
+            buf.append(getRequestURI());
             buf.append(getQueryString());
             buf.append(AccessConverter.SPACE_CHAR);
-            buf.append(httpRequest.getProtocol());
+            buf.append(getProtocol());
             requestURL = buf.toString();
         } else {
             requestURL = NA;

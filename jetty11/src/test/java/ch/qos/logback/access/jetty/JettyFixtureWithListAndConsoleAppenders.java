@@ -32,7 +32,10 @@ public class JettyFixtureWithListAndConsoleAppenders extends JettyFixtureBase {
 
     public void stop() throws Exception {
         super.stop();
-        Thread.sleep(500);
+    }
+
+    public void addEventListener() {
+        server.addEventListener(new LCListener());
     }
 
     @Override

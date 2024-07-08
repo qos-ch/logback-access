@@ -23,11 +23,17 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 public class JettyFixtureBase {
+
+
+    public static String HELLO_WORLD_MSG = "Hello world";
+
+
     final protected RequestLogImpl requestLogImpl;
-    protected Handler handler = new BasicHandler();
+    protected Handler handler = new HelloWorldHandler(HELLO_WORLD_MSG);
     private final int port;
     Server server;
     protected String url;
@@ -49,10 +55,21 @@ public class JettyFixtureBase {
     public void start() throws Exception {
         server = new Server(port);
 
+
+
         server.setRequestLog(requestLogImpl);
         configureRequestLogImpl();
 
-        server.setHandler(getRequestHandler());
+        ContextHandler context = new ContextHandler("/");
+        context.setContextPath("/");
+        context.setHandler(makeHelloWorldHandler(HELLO_WORLD_MSG));
+
+        ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
+        contextHandlerCollection.setHandlers(new Handler[] { context });
+
+        server.addEventListener(new LCListener());
+
+        server.setHandler(contextHandlerCollection);
         server.start();
     }
 
@@ -61,20 +78,31 @@ public class JettyFixtureBase {
         server = null;
     }
 
+    public void join() throws Exception {
+        server.join();
+    }
+
     protected void configureRequestLogImpl() {
         requestLogImpl.start();
     }
 
-    protected Handler getRequestHandler() {
-        return handler;
+    protected Handler makeHelloWorldHandler(String msg) {
+        return new HelloWorldHandler(msg);
     }
 
-    class BasicHandler extends AbstractHandler {
+    class HelloWorldHandler extends AbstractHandler {
+
+        String msg;
+
+        HelloWorldHandler(String msg) {
+            this.msg = msg;
+        }
+
         public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/plain");
             Writer writer = response.getWriter();
-            writer.write("hello world");
+            writer.write(msg);
             writer.flush();
             baseRequest.setHandled(true);
         }

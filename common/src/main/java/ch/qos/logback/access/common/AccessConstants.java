@@ -29,4 +29,6 @@ public class AccessConstants {
     public static final String TEE_FILTER_INCLUDES_PARAM = "includes";
     public static final String TEE_FILTER_EXCLUDES_PARAM = "excludes";
 
+    public static final String COOKIE_REQUEST_PROP_KEY = "Cookie";
+
 }
