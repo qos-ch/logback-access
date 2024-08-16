@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.locks.ReentrantLock;
 
 import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
@@ -97,7 +98,7 @@ public class LogbackValve extends ValveBase
 
     private long birthTime = System.currentTimeMillis();
 
-    LogbackLock configurationLock = new LogbackLock();
+    ReentrantLock configurationLock = new ReentrantLock();
 
     final private List<ConfigurationEventListener> configurationEventListenerList = new ArrayList<>();
 
@@ -427,7 +428,7 @@ public class LogbackValve extends ValveBase
     }
 
     @Override
-    public Object getConfigurationLock() {
+    public ReentrantLock getConfigurationLock() {
         return configurationLock;
     }
 
