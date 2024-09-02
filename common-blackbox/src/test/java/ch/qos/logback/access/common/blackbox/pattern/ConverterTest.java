@@ -106,6 +106,50 @@ public class ConverterTest {
         assertEquals(converter.internalCachingDateFormatter().format(event.getTimeStamp()), result);
     }
 
+    @Test
+    public void testDateConverter_en_locale() {
+        DateConverter converter = new DateConverter();
+        List<String> optionsList = Lists.list(
+                CoreConstants.CLF_DATE_PATTERN,
+                "UTC",
+                "en");
+
+        converter.setOptionList(optionsList);
+        converter.start();
+        Instant instant = Instant.parse("2022-09-21T10:30:20.800Z");
+
+        System.out.println(instant.toEpochMilli());
+
+        event.setTimeStamp(instant.toEpochMilli());
+        String result = converter.convert(event);
+        assertEquals("21/Sep/2022:10:30:20 +0000", result);
+        System.out.println(result);
+
+        assertEquals(converter.internalCachingDateFormatter().format(event.getTimeStamp()), result);
+    }
+
+    @Test
+    public void testDateConverter_en_GB_locale() {
+        DateConverter converter = new DateConverter();
+        List<String> optionsList = Lists.list(
+                CoreConstants.CLF_DATE_PATTERN,
+                "UTC",
+                "en-GB");
+
+        converter.setOptionList(optionsList);
+        converter.start();
+        Instant instant = Instant.parse("2022-09-21T10:30:20.800Z");
+
+        System.out.println(instant.toEpochMilli());
+
+        event.setTimeStamp(instant.toEpochMilli());
+        String result = converter.convert(event);
+        // September is now 'Sept' in the en_GB locale (see https://bugs.openjdk.org/browse/JDK-8256837)
+        assertEquals("21/Sept/2022:10:30:20 +0000", result);
+        System.out.println(result);
+
+        assertEquals(converter.internalCachingDateFormatter().format(event.getTimeStamp()), result);
+    }
 
     public void testLineLocalPortConverter() {
         LocalPortConverter converter = new LocalPortConverter();
