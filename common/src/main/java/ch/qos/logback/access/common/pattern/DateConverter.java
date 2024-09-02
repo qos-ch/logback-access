@@ -15,6 +15,7 @@ package ch.qos.logback.access.common.pattern;
 
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Locale;
 
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.core.CoreConstants;
@@ -29,31 +30,37 @@ public class DateConverter extends AccessConverter {
     public void start() {
 
         String datePattern = getFirstOption();
+
         if (datePattern == null) {
             datePattern = CoreConstants.CLF_DATE_PATTERN;
-        }
-
-        if (datePattern.equals(CoreConstants.ISO8601_STR)) {
+        } else if (datePattern.equals(CoreConstants.ISO8601_STR)) {
             datePattern = CoreConstants.ISO8601_PATTERN;
+        } else if (datePattern.equals(CoreConstants.STRICT_STR)) {
+            datePattern = CoreConstants.STRICT_ISO8601_PATTERN;
         }
-        ZoneId zoneId = null;
-        List<String> optionList = getOptionList();
 
+        List<String> optionList = getOptionList();
+        ZoneId zoneId = null;
         // if the option list contains a TZ option, then set it.
         if (optionList != null && optionList.size() > 1) {
             String zoneIdString = (String) optionList.get(1);
             zoneId = ZoneId.of(zoneIdString);
         }
+        Locale locale = null;
+        if (optionList != null && optionList.size() > 2) {
+            String localeIdStr = (String) optionList.get(2);
+            locale = Locale.forLanguageTag(localeIdStr);
+            addInfo("Setting locale to \""+locale+"\"");
+        }
 
         try {
-            cachingDateFormatter = new CachingDateFormatter(datePattern, zoneId);
+            cachingDateFormatter = new CachingDateFormatter(datePattern, zoneId, locale);
             // maximumCacheValidity = CachedDateFormat.getMaximumCacheValidity(pattern);
         } catch (IllegalArgumentException e) {
             addWarn("Could not instantiate SimpleDateFormat with pattern " + datePattern, e);
             addWarn("Defaulting to  " + CoreConstants.CLF_DATE_PATTERN);
             cachingDateFormatter = new CachingDateFormatter(CoreConstants.CLF_DATE_PATTERN, zoneId);
         }
-
     }
 
     @Override
