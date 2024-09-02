@@ -54,16 +54,20 @@ public class DateConverter extends AccessConverter {
         }
 
         try {
+            // if zoneId is null, the CachingDateFormatter will use the ZoneId.systemDefault()
+            // if locale is null, the CachingDateFormatter will use the Locale.getDefault()
             cachingDateFormatter = new CachingDateFormatter(datePattern, zoneId, locale);
-            // maximumCacheValidity = CachedDateFormat.getMaximumCacheValidity(pattern);
         } catch (IllegalArgumentException e) {
             addWarn("Could not instantiate SimpleDateFormat with pattern " + datePattern, e);
             addWarn("Defaulting to  " + CoreConstants.CLF_DATE_PATTERN);
             cachingDateFormatter = new CachingDateFormatter(CoreConstants.CLF_DATE_PATTERN, zoneId);
         }
+
+        super.start();
     }
 
     @Override
+
     public String convert(IAccessEvent accessEvent) {
         long timestamp = accessEvent.getTimeStamp();
         return cachingDateFormatter.format(timestamp);
@@ -74,7 +78,9 @@ public class DateConverter extends AccessConverter {
      * by regular clients.
      *
      * @return the CachingDateFormatter in use
+     * @deprecated Will be removed in future versions with no replacement
      */
+    @Deprecated
     public CachingDateFormatter internalCachingDateFormatter() {
         return cachingDateFormatter;
     }
