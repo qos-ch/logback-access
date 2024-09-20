@@ -11,7 +11,7 @@
     <version>2.0.4-SNAPSHOT</version>
   </parent>
 
-  <artifactId>common</artifactId>
+  <artifactId>logback-access-common</artifactId>
   <packaging>jar</packaging>
   <name>Logback Access Common Module</name>
   <description>Logback Access Common module</description>

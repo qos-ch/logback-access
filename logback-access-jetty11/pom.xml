@@ -11,7 +11,7 @@
     <version>2.0.4-SNAPSHOT</version>
   </parent>
 
-  <artifactId>jetty11</artifactId>
+  <artifactId>logback-access-jetty11</artifactId>
   <packaging>jar</packaging>
   <name>Logback Access Jetty 11 Module</name>
   <description>Logback Access  Jetty 11 Module</description>
@@ -23,12 +23,12 @@
 
     <dependency>      
       <groupId>ch.qos.logback.access</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>logback-access-common</artifactId>
     </dependency>
 
     <dependency>      
       <groupId>ch.qos.logback.access</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>logback-access-common</artifactId>
       <version>${project.version}</version>
       <type>test-jar</type>
       <scope>test</scope>

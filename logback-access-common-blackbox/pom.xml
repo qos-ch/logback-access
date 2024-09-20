@@ -11,7 +11,7 @@
         <version>2.0.4-SNAPSHOT</version>
     </parent>
 
-    <artifactId>common-blackbox</artifactId>
+    <artifactId>logback-access-common-blackbox</artifactId>
     <packaging>jar</packaging>
     <name>Logback Access Common Blackbox Module</name>
     <description>Logback Access Common Blackbox module</description>
@@ -29,7 +29,7 @@
 
         <dependency>
             <groupId>ch.qos.logback.access</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>logback-access-common</artifactId>
             <scope>compile</scope>
         </dependency>
 

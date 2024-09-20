@@ -11,10 +11,10 @@
     <version>2.0.4-SNAPSHOT</version>
   </parent>
 
-  <artifactId>tomcat_11_0_blackbox</artifactId>
+  <artifactId>logback-access-tomcat_10_1_blackbox</artifactId>
   <packaging>jar</packaging>
-  <name>Logback Access Tomcat 11.0 Blackbox Module</name>
-  <description>Logback Access Tomcat 11.0 Blackbox module</description>
+  <name>Logback Access Tomcat 10.1 Blackbox Module</name>
+  <description>Logback Access Tomcat 10.1 Blackbox module</description>
 
   <properties>
 
@@ -72,36 +72,33 @@
 
     <dependency>
       <groupId>ch.qos.logback.access</groupId>
-      <artifactId>common</artifactId>      
+      <artifactId>logback-access-common</artifactId>
     </dependency>
     
     <dependency>
       <groupId>ch.qos.logback.access</groupId>
-      <artifactId>common</artifactId>      
+      <artifactId>logback-access-common</artifactId>
       <version>${project.version}</version>      
       <type>test-jar</type>
     </dependency>
 
-
     <dependency>
       <groupId>ch.qos.logback.access</groupId>
-      <artifactId>tomcat</artifactId>
+      <artifactId>logback-access-tomcat</artifactId>
       <version>${project.version}</version>
     </dependency>
-
 
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-catalina</artifactId>
-      <version>${tomcat_11_0.version}</version>
+      <version>${tomcat_10_1.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-coyote</artifactId>
-      <version>${tomcat_11_0.version}</version>
+      <version>${tomcat_10_1.version}</version>      
     </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -129,7 +126,6 @@
           <skip>true</skip>
         </configuration>
       </plugin>
-
 
     </plugins>
   </build>

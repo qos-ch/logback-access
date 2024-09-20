@@ -39,13 +39,13 @@
   </scm>
 
   <modules>
-    <module>common</module>
-    <module>common-blackbox</module>
-    <module>tomcat</module>
-    <module>tomcat_10_1_blackbox</module>
-    <module>tomcat_11_0_blackbox</module>
-    <module>jetty11</module>
-    <module>jetty12</module>
+    <module>logback-access-common</module>
+    <module>logback-access-common-blackbox</module>
+    <module>logback-access-tomcat</module>
+    <module>logback-access-tomcat_10_1_blackbox</module>
+    <module>logback-access-tomcat_11_0_blackbox</module>
+    <module>logback-access-jetty11</module>
+    <module>logback-access-jetty12</module>
   </modules>
 
   <properties>
@@ -140,6 +140,11 @@
   <dependencyManagement>
   
     <dependencies>
+      <dependency>
+        <groupId>ch.qos.logback.access</groupId>
+        <artifactId>logback-access-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!-- start of dependencies duplicated from logback-bom/pom.xml -->
       <dependency>
@@ -160,14 +165,6 @@
         <version>${slf4j.version}</version>
       </dependency>
 
-
-    <dependency>
-      <groupId>ch.qos.logback.access</groupId>
-      <artifactId>common</artifactId>
-      <version>${project.version}</version>      
-    </dependency>
-
-      
       <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
