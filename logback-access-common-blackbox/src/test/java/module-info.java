@@ -12,7 +12,6 @@ module ch.qos.logback.access.common.blackbox {
     requires janino;
     requires jakarta.servlet;
 
-    opens ch.qos.logback.access.common.blackbox.boolex to org.junit.platform.commons;
     opens ch.qos.logback.access.common.blackbox.joran to org.junit.platform.commons;
     opens ch.qos.logback.access.common.blackbox.net to org.junit.platform.commons;
     opens ch.qos.logback.access.common.blackbox.pattern to org.junit.platform.commons;

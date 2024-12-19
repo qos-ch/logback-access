@@ -61,7 +61,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <forkMode>once</forkMode>
-                        <argLine>--add-opens java.base/java.io=ch.qos.logback.access.common.blackbox</argLine>
+                      <argLine>--add-opens java.base/java.io=ch.qos.logback.access.common.blackbox</argLine>
 
                     <!--                    <argLine>-->
                     <!--                        &#45;&#45;add-modules jakarta.servlet-->
