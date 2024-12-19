@@ -44,12 +44,14 @@ import ch.qos.logback.access.common.pattern.SessionIDConverter;
 import ch.qos.logback.access.common.pattern.StatusCodeConverter;
 import ch.qos.logback.access.common.pattern.ThreadNameConverter;
 import ch.qos.logback.access.common.spi.IAccessEvent;
+import ch.qos.logback.core.pattern.DynamicConverter;
 import ch.qos.logback.core.pattern.PatternLayoutBase;
 import ch.qos.logback.core.pattern.color.*;
 import ch.qos.logback.core.pattern.parser.Parser;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * <p>
@@ -68,7 +70,7 @@ import java.util.Map;
  */
 public class PatternLayout extends PatternLayoutBase<IAccessEvent> {
 
-    public static final Map<String, String> defaultConverterMap = new HashMap<String, String>();
+    public static final Map<String, Supplier<DynamicConverter>> ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP = new HashMap<>();
     public static final String HEADER_PREFIX = "#logback.access pattern: ";
 
     public static final String CLF_PATTERN = "%h %l %u [%t] \"%r\" %s %b";
@@ -78,103 +80,103 @@ public class PatternLayout extends PatternLayoutBase<IAccessEvent> {
     public static final String COMBINED_PATTERN_NAME = "combined";
 
     static {
-        defaultConverterMap.putAll(Parser.DEFAULT_COMPOSITE_CONVERTER_MAP);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.putAll(Parser.DEFAULT_COMPOSITE_CONVERTER_MAP);
 
-        defaultConverterMap.put("a", RemoteIPAddressConverter.class.getName());
-        defaultConverterMap.put("remoteIP", RemoteIPAddressConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("a", RemoteIPAddressConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("remoteIP", RemoteIPAddressConverter::new);
 
-        defaultConverterMap.put("A", LocalIPAddressConverter.class.getName());
-        defaultConverterMap.put("localIP", LocalIPAddressConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("A", LocalIPAddressConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("localIP", LocalIPAddressConverter::new);
 
-        defaultConverterMap.put("b", ContentLengthConverter.class.getName());
-        defaultConverterMap.put("B", ContentLengthConverter.class.getName());
-        defaultConverterMap.put("bytesSent", ContentLengthConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("b", ContentLengthConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("B", ContentLengthConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("bytesSent", ContentLengthConverter::new);
 
-        defaultConverterMap.put("h", RemoteHostConverter.class.getName());
-        defaultConverterMap.put("clientHost", RemoteHostConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("h", RemoteHostConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("clientHost", RemoteHostConverter::new);
 
-        defaultConverterMap.put("H", RequestProtocolConverter.class.getName());
-        defaultConverterMap.put("protocol", RequestProtocolConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("H", RequestProtocolConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("protocol", RequestProtocolConverter::new);
 
-        defaultConverterMap.put("i", RequestHeaderConverter.class.getName());
-        defaultConverterMap.put("header", RequestHeaderConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("i", RequestHeaderConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("header", RequestHeaderConverter::new);
 
-        defaultConverterMap.put("I", ThreadNameConverter.class.getName());
-        defaultConverterMap.put("threadName", ThreadNameConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("I", ThreadNameConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("threadName", ThreadNameConverter::new);
 
-        defaultConverterMap.put("l", NAConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("l", NAConverter::new);
 
-        defaultConverterMap.put("m", RequestMethodConverter.class.getName());
-        defaultConverterMap.put("requestMethod", RequestMethodConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("m", RequestMethodConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestMethod", RequestMethodConverter::new);
 
-        defaultConverterMap.put("q", QueryStringConverter.class.getName());
-        defaultConverterMap.put("queryString", QueryStringConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("q", QueryStringConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("queryString", QueryStringConverter::new);
 
-        defaultConverterMap.put("r", RequestURLConverter.class.getName());
-        defaultConverterMap.put("requestURL", RequestURLConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("r", RequestURLConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestURL", RequestURLConverter::new);
 
-        defaultConverterMap.put("s", StatusCodeConverter.class.getName());
-        defaultConverterMap.put("statusCode", StatusCodeConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("s", StatusCodeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("statusCode", StatusCodeConverter::new);
 
-        defaultConverterMap.put("S", SessionIDConverter.class.getName());
-        defaultConverterMap.put("sessionID", SessionIDConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("S", SessionIDConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("sessionID", SessionIDConverter::new);
 
-        defaultConverterMap.put("t", DateConverter.class.getName());
-        defaultConverterMap.put("date", DateConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("t", DateConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("date", DateConverter::new);
 
-        defaultConverterMap.put("u", RemoteUserConverter.class.getName());
-        defaultConverterMap.put("user", RemoteUserConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("u", RemoteUserConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("user", RemoteUserConverter::new);
 
-        defaultConverterMap.put("U", RequestURIConverter.class.getName());
-        defaultConverterMap.put("requestURI", RequestURIConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("U", RequestURIConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestURI", RequestURIConverter::new);
 
-        defaultConverterMap.put("v", ServerNameConverter.class.getName());
-        defaultConverterMap.put("server", ServerNameConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("v", ServerNameConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("server", ServerNameConverter::new);
 
-        defaultConverterMap.put("localPort", LocalPortConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("localPort", LocalPortConverter::new);
 
-        defaultConverterMap.put("requestAttribute", RequestAttributeConverter.class.getName());
-        defaultConverterMap.put("reqAttribute", RequestAttributeConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestAttribute", RequestAttributeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("reqAttribute", RequestAttributeConverter::new);
 
-        defaultConverterMap.put("reqCookie", RequestCookieConverter.class.getName());
-        defaultConverterMap.put("requestCookie", RequestCookieConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("reqCookie", RequestCookieConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestCookie", RequestCookieConverter::new);
 
-        defaultConverterMap.put("responseHeader", ResponseHeaderConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("responseHeader", ResponseHeaderConverter::new);
 
-        defaultConverterMap.put("requestParameter", RequestParameterConverter.class.getName());
-        defaultConverterMap.put("reqParameter", RequestParameterConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestParameter", RequestParameterConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("reqParameter", RequestParameterConverter::new);
 
-        defaultConverterMap.put("requestContent", RequestContentConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("requestContent", RequestContentConverter::new);
 
-        defaultConverterMap.put("responseContent", ResponseContentConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("responseContent", ResponseContentConverter::new);
 
-        defaultConverterMap.put("fullRequest", FullRequestConverter.class.getName());
-        defaultConverterMap.put("fullResponse", FullResponseConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("fullRequest", FullRequestConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("fullResponse", FullResponseConverter::new);
 
-        defaultConverterMap.put("elapsedTime", ElapsedTimeConverter.class.getName());
-        defaultConverterMap.put("D", ElapsedTimeConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("elapsedTime", ElapsedTimeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("D", ElapsedTimeConverter::new);
 
-        defaultConverterMap.put("elapsedSeconds", ElapsedSecondsConverter.class.getName());
-        defaultConverterMap.put("T", ElapsedSecondsConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("elapsedSeconds", ElapsedSecondsConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("T", ElapsedSecondsConverter::new);
 
-        defaultConverterMap.put("n", LineSeparatorConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("n", LineSeparatorConverter::new);
 
-        defaultConverterMap.put("black", BlackCompositeConverter.class.getName());
-        defaultConverterMap.put("red", RedCompositeConverter.class.getName());
-        defaultConverterMap.put("green", GreenCompositeConverter.class.getName());
-        defaultConverterMap.put("yellow", YellowCompositeConverter.class.getName());
-        defaultConverterMap.put("blue", BlueCompositeConverter.class.getName());
-        defaultConverterMap.put("magenta", MagentaCompositeConverter.class.getName());
-        defaultConverterMap.put("cyan", CyanCompositeConverter.class.getName());
-        defaultConverterMap.put("white", WhiteCompositeConverter.class.getName());
-        defaultConverterMap.put("gray", GrayCompositeConverter.class.getName());
-        defaultConverterMap.put("boldRed", BoldRedCompositeConverter.class.getName());
-        defaultConverterMap.put("boldGreen", BoldGreenCompositeConverter.class.getName());
-        defaultConverterMap.put("boldYellow", BoldYellowCompositeConverter.class.getName());
-        defaultConverterMap.put("boldBlue", BoldBlueCompositeConverter.class.getName());
-        defaultConverterMap.put("boldMagenta", BoldMagentaCompositeConverter.class.getName());
-        defaultConverterMap.put("boldCyan", BoldCyanCompositeConverter.class.getName());
-        defaultConverterMap.put("boldWhite", BoldWhiteCompositeConverter.class.getName());
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("black", BlackCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("red", RedCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("green", GreenCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("yellow", YellowCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("blue", BlueCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("magenta", MagentaCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("cyan", CyanCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("white", WhiteCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("gray", GrayCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldRed", BoldRedCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldGreen", BoldGreenCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldYellow", BoldYellowCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldBlue", BoldBlueCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldMagenta", BoldMagentaCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldCyan", BoldCyanCompositeConverter::new);
+        ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP.put("boldWhite", BoldWhiteCompositeConverter::new);
     }
 
     public PatternLayout() {
@@ -188,8 +190,13 @@ public class PatternLayout extends PatternLayoutBase<IAccessEvent> {
      * Returns the default converter map for this instance.
      */
     @Override
+    public Map<String, Supplier<DynamicConverter>> getDefaultConverterSupplierMap() {
+        return ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP;
+    }
+
+    @Override
     public Map<String, String> getDefaultConverterMap() {
-        return defaultConverterMap;
+        return Map.of();
     }
 
     @Override

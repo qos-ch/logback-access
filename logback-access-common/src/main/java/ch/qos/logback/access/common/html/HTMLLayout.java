@@ -16,11 +16,13 @@ package ch.qos.logback.access.common.html;
 import static ch.qos.logback.core.CoreConstants.LINE_SEPARATOR;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import ch.qos.logback.access.common.PatternLayout;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.core.html.HTMLLayoutBase;
 import ch.qos.logback.core.pattern.Converter;
+import ch.qos.logback.core.pattern.DynamicConverter;
 
 /**
  * 
@@ -54,8 +56,8 @@ public class HTMLLayout extends HTMLLayoutBase<IAccessEvent> {
     }
 
     @Override
-    protected Map<String, String> getDefaultConverterMap() {
-        return PatternLayout.defaultConverterMap;
+    protected Map<String, Supplier<DynamicConverter>> getDefaultConverterSupplierMap() {
+        return PatternLayout.ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP;
     }
 
     @Override
