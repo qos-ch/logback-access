@@ -88,6 +88,7 @@
     <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
     <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
     <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+    <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
 
     <maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
     <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
@@ -133,12 +134,12 @@
       <scope>test</scope>
     </dependency>
 
-    
-    
+
+
   </dependencies>
 
   <dependencyManagement>
-  
+
     <dependencies>
       <dependency>
         <groupId>ch.qos.logback.access</groupId>
@@ -207,7 +208,7 @@
         <version>2.10</version>
       </extension>
     </extensions>
-
+      
     <pluginManagement>
       <plugins>
         <plugin>
@@ -240,23 +241,17 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven-surefire-plugin.version}</version>
         </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jxr-plugin</artifactId>
+          <version>${maven-jxr-plugin.version}</version>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
           <version>${maven-jar-plugin.version}</version>
-          <configuration>
-            <outputTimestamp>${project.build.outputTimestamp}</outputTimestamp>
-            <archive>
-              <index>true</index>
-              <manifest>
-                <!-- Add version information into the MANIFEST so it is accessible by
-                     calling Package#getImplementationVersion()
-                 -->
-                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-              </manifest>
-            </archive>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -278,9 +273,7 @@
           <artifactId>maven-source-plugin</artifactId>
           <version>${maven-source-plugin.version}</version>
         </plugin>
-
       </plugins>
-
     </pluginManagement>
 
     <plugins>
@@ -293,7 +286,7 @@
           <release>${jdk.version}</release>
         </configuration>
       </plugin>
- 
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -308,6 +301,39 @@
         </executions>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+
+        <configuration>
+          <linksource>true</linksource>
+          <skippedModules>
+            logback-access-jetty11,logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox
+          </skippedModules>
+          <doclint>none</doclint>
+          <links>
+            <link>
+              http://docs.oracle.com/javase/7/docs/api/
+            </link>
+          </links>
+          <groups>
+            <group>
+              <title>Logback Access</title>
+              <packages>ch.qos.logback.access:ch.qos.logback.access.*
+              </packages>
+            </group>
+          </groups>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <configuration>
+          <!--<javadocDir>target/site/apidocs/</javadocDir>-->
+          <linkJavadoc>false</linkJavadoc>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -323,12 +349,12 @@
   <reporting>
     <plugins>
 
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        
-        <configuration>                                
+
+        <configuration>
           <aggregate>true</aggregate>
           <linkJavadoc>true</linkJavadoc>
           <linksource>true</linksource>
@@ -341,20 +367,20 @@
               http://docs.oracle.com/javase/7/docs/api/
             </link>
           </links>
-          <groups>                            
+          <groups>
             <group>
               <title>Logback Access</title>
               <packages>ch.qos.logback.access:ch.qos.logback.access.*
               </packages>
             </group>
-          </groups>                  
+          </groups>
         </configuration>
       </plugin>
-      
-            
+
+
     </plugins>
   </reporting>
-  
+
   <profiles>
     <profile>
       <id>license</id>
@@ -401,7 +427,7 @@
                 <goals>
                   <goal>jar</goal>
                 </goals>
-              </execution>            
+              </execution>
             </executions>
             <configuration>
               <doclint>none</doclint>
