@@ -10,6 +10,7 @@ module ch.qos.logback.access.common {
   requires static commons.compiler;
 
   exports ch.qos.logback.access.common;
+  exports ch.qos.logback.access.common.boolex;
   exports ch.qos.logback.access.common.filter;
 
   exports ch.qos.logback.access.common.html;

@@ -1,0 +1,21 @@
+<configuration>
+    <import class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+    <import class="ch.qos.logback.core.read.ListAppender"/>
+    <import class="ch.qos.logback.core.filter.EvaluatorFilter"/>
+
+    <!--  <statusListener class="OnConsoleStatusListener"/>-->
+
+    <appender name="LIST"  class="ListAppender">
+        <filter class="EvaluatorFilter">
+            <evaluator>
+                <expression>return true;</expression>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+    </appender>
+
+
+    <appender-ref ref="LIST" />
+
+</configuration>

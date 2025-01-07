@@ -1,0 +1,23 @@
+<configuration>
+    <import class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+    <import class="ch.qos.logback.core.read.ListAppender"/>
+    <import class="ch.qos.logback.core.filter.EvaluatorFilter"/>
+    <import class="ch.qos.logback.access.common.boolex.StatusCodeEventEvaluator"/>
+    <import class="ch.qos.logback.access.common.boolex.RequestURIEventEvaluator"/>
+
+    <!--  <statusListener class="OnConsoleStatusListener"/>-->
+
+    <appender name="LIST" class="ListAppender">
+        <filter class="EvaluatorFilter">
+            <evaluator class="RequestURIEventEvaluator">
+                <regex>\.css$</regex>
+            </evaluator>
+            <onMatch>DENY</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+
+    </appender>
+
+    <appender-ref ref="LIST"/>
+
+</configuration>

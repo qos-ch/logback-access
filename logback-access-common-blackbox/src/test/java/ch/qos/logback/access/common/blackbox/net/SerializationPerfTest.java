@@ -53,7 +53,7 @@ public class SerializationPerfTest {
         int pauseCounter = 0;
         for (int i = 0; i < loopNumber; i++) {
             try {
-                IAccessEvent ae = DummyAccessEventBuilder.buildNewAccessEvent();
+                IAccessEvent ae = DummyAccessEventBuilder.buildNewDefaultAccessEvent();
                 // average time for the next method: 5000 nanos
                 ae.prepareForDeferredProcessing();
                 oos.writeObject(ae);
@@ -81,7 +81,7 @@ public class SerializationPerfTest {
         // System.out.println("Beginning measured run");
         for (int i = 0; i < loopNumber; i++) {
             try {
-                IAccessEvent ae = DummyAccessEventBuilder.buildNewAccessEvent();
+                IAccessEvent ae = DummyAccessEventBuilder.buildNewDefaultAccessEvent();
                 t1 = System.nanoTime();
                 // average length of the next method: 4000 nanos
                 ae.prepareForDeferredProcessing();

@@ -52,8 +52,8 @@
     <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
     <project.build.outputTimestamp>2024-12-19T19:36:33Z</project.build.outputTimestamp>
 
-    <logback.core.version>1.5.14</logback.core.version>
-    <slf4j.version>2.0.13</slf4j.version>
+    <logback.core.version>1.5.16</logback.core.version>
+    <slf4j.version>2.0.16</slf4j.version>
     <janino.version>3.1.8</janino.version>
 
     <!-- minimal JDK version at runtime -->
@@ -208,7 +208,7 @@
         <version>2.10</version>
       </extension>
     </extensions>
-      
+
     <pluginManagement>
       <plugins>
         <plugin>

@@ -33,7 +33,7 @@ public class AccessEventTest {
         String key = "key-" + diff;
         String val = "val-" + diff;
 
-        IAccessEvent ae = DummyAccessEventBuilder.buildNewAccessEvent();
+        IAccessEvent ae = DummyAccessEventBuilder.buildNewDefaultAccessEvent();
         DummyRequest request = (DummyRequest) ae.getRequest();
         Map<String, String> headersMap = request.getHeaders();
         Map<String, String[]> parametersMap = request.getParameterMap();
@@ -58,7 +58,7 @@ public class AccessEventTest {
 
     @Test
     void cookiesListTest() throws Exception {
-        IAccessEvent ae = DummyAccessEventBuilder.buildNewAccessEvent();
+        IAccessEvent ae = DummyAccessEventBuilder.buildNewDefaultAccessEvent();
         List<Cookie> cookiesList = ae.getCookies();
         assertEquals(1, cookiesList.size());
         Cookie cookie = new Cookie("testName", "testCookie");

@@ -37,7 +37,7 @@ public class AccessEventSerializationTest {
     private Object buildSerializedAccessEvent() throws IOException, ClassNotFoundException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
-        IAccessEvent ae = DummyAccessEventBuilder.buildNewAccessEvent();
+        IAccessEvent ae = DummyAccessEventBuilder.buildNewDefaultAccessEvent();
         // average time for the next method: 5000 nanos
         ae.prepareForDeferredProcessing();
         oos.writeObject(ae);

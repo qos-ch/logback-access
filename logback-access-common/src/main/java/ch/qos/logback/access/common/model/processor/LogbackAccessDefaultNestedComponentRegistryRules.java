@@ -15,6 +15,7 @@ package ch.qos.logback.access.common.model.processor;
 
 import ch.qos.logback.access.common.PatternLayout;
 import ch.qos.logback.access.common.PatternLayoutEncoder;
+import ch.qos.logback.access.common.boolex.StubEventEvaluator;
 import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import ch.qos.logback.core.filter.EvaluatorFilter;
@@ -29,6 +30,8 @@ public class LogbackAccessDefaultNestedComponentRegistryRules {
 
         registry.add(AppenderBase.class, "encoder", PatternLayoutEncoder.class);
         registry.add(UnsynchronizedAppenderBase.class, "encoder", PatternLayoutEncoder.class);
+        registry.add(EvaluatorFilter.class, "evaluator", StubEventEvaluator.class);
+
         SSLNestedComponentRegistryRules.addDefaultNestedComponentRegistryRules(registry);
 
     }

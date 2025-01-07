@@ -92,8 +92,6 @@ public class DummyResponse implements HttpServletResponse {
     public void setIntHeader(String arg0, int arg1) {
     }
 
-    public void setStatus(int arg0, String arg1) {
-    }
 
     public void flushBuffer() throws IOException {
     }

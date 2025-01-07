@@ -13,7 +13,6 @@ package ch.qos.logback.access.common.blackbox.dummy;
 
 import ch.qos.logback.access.common.spi.AccessContext;
 import ch.qos.logback.access.common.spi.AccessEvent;
-import ch.qos.logback.access.common.spi.IAccessEvent;
 
 public class DummyAccessEventBuilder {
 
@@ -46,7 +45,7 @@ public class DummyAccessEventBuilder {
         return this;
     }
 
-    public IAccessEvent build() {
+    public AccessEvent build() {
         if (this.request == null)
             this.request = new DummyRequest();
         if (this.response == null)
@@ -59,7 +58,7 @@ public class DummyAccessEventBuilder {
         return new AccessEvent(accessContext, request, response, adapter);
     }
 
-    static public IAccessEvent buildNewAccessEvent() {
+    static public AccessEvent buildNewDefaultAccessEvent() {
         DummyAccessEventBuilder daeb = new DummyAccessEventBuilder();
         return daeb.build();
     }
