@@ -330,8 +330,12 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
-          <!--<javadocDir>target/site/apidocs/</javadocDir>-->
           <linkJavadoc>false</linkJavadoc>
+          <excludes>
+              <!-- exclude blackbox modules. Did not find another way to do this. -->
+              <exclude>**/ch/qos/logback/access/tomcat_10_1/*.java</exclude>
+              <exclude>**/ch/qos/logback/access/tomcat_11_0/*.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
     </plugins>
