@@ -14,15 +14,12 @@
 package ch.qos.logback.access.jetty;
 
 import ch.qos.logback.access.common.spi.ServerAdapter;
-
-import org.eclipse.jetty.http.HttpField;
-import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
+
+import static ch.qos.logback.access.jetty.HeaderUtil.buildHeaderMap;
 
 /**
  * A jetty specific implementation of the {@link ServerAdapter} interface.
@@ -57,16 +54,7 @@ public class JettyServerAdapter implements ServerAdapter {
 
     @Override
     public Map<String, String> buildResponseHeaderMap() {
-        Map<String, String> responseHeaderMap = new HashMap<String, String>();
-        HttpFields.Mutable httpFields = response.getHeaders();
-
-        for(HttpField field: httpFields) {
-            String key = field.getName();
-            String value = field.getValue();
-            responseHeaderMap.put(key, value);
-        }
-
-        return responseHeaderMap;
+        return buildHeaderMap(response.getHeaders());
     }
 
 }
