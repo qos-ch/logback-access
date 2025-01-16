@@ -13,13 +13,7 @@
  */
 package ch.qos.logback.access.jetty;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import ch.qos.logback.access.common.spi.ServerAdapter;
-import org.eclipse.jetty.http.HttpField;
-import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
 
@@ -31,42 +25,7 @@ import org.eclipse.jetty.server.Response;
  * @author Joakim Erdfelt
  */
 public class JettyModernServerAdapter extends JettyServerAdapter {
-
-
     public JettyModernServerAdapter(Request jettyRequest, Response jettyResponse) {
         super(jettyRequest, jettyResponse);
     }
-
-    @Override
-    public long getContentLength() {
-
-        return Response.getContentBytesWritten(response);
-        //return response.getHttpChannel().getBytesWritten();
-    }
-
-    @Override
-    public int getStatusCode() {
-        return response.getStatus();
-        //return response.getCommittedMetaData().getStatus();
-    }
-
-    @Override
-    public long getRequestTimestamp() {
-        return Request.getTimeStamp(request);
-    }
-
-    @Override
-    public Map<String, String> buildResponseHeaderMap() {
-        Map<String, String> responseHeaderMap = new HashMap<>();
-        HttpFields.Mutable httpFields = response.getHeaders();
-
-        for(HttpField field: httpFields) {
-            String key = field.getName();
-            String value = field.getValue();
-            responseHeaderMap.put(key, value);
-        }
-
-        return responseHeaderMap;
-    }
-
 }
