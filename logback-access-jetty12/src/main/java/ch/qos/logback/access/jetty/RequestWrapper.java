@@ -17,9 +17,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpUpgradeHandler;
 import jakarta.servlet.http.Part;
 import org.eclipse.jetty.http.HttpCookie;
-import org.eclipse.jetty.http.HttpField;
 import org.eclipse.jetty.http.HttpScheme;
-import org.eclipse.jetty.http.HttpURI;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Session;
@@ -37,10 +35,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static ch.qos.logback.access.common.spi.IAccessEvent.NA;
+import static ch.qos.logback.access.jetty.HeaderUtil.buildHeaderMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
@@ -92,11 +90,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public Map<String, String> buildRequestHeaderMap() {
-        Map<String, String> requestHeaderMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        for (HttpField f : request.getHeaders()) {
-            requestHeaderMap.put(f.getName(), f.getValue());
-        }
-        return requestHeaderMap;
+        return buildHeaderMap(request.getHeaders());
     }
 
     @Override
