@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FormServletTest {
     static Server server;
@@ -81,6 +82,7 @@ public class FormServletTest {
                         .build();
         HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString());
         assertEquals(400, resp.statusCode());
+        fail();
     }
 
 }
