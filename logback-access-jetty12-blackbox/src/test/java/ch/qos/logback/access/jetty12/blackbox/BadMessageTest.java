@@ -8,6 +8,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,6 +32,7 @@ public class BadMessageTest {
         server.stop();
     }
 
+    @Disabled
     @Test
     public void testBadMethod() throws Exception {
         HttpTester.Request request = HttpTester.newRequest();

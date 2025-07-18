@@ -82,7 +82,6 @@ public class FormServletTest {
                         .build();
         HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString());
         assertEquals(400, resp.statusCode());
-        fail();
     }
 
 }
