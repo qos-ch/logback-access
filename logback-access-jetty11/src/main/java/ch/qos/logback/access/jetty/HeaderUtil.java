@@ -29,7 +29,8 @@ import java.util.TreeMap;
  * @since 2.0.7
  */
 class HeaderUtil {
-    static Map<String, String> buildHeaderMap(HttpFields headers) {
+
+    static Map<String, String> buildHeaderMap(HttpFields.Mutable headers) {
         Map<String, String> requestHeaderMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (HttpField httpField : headers) {
             String existing = requestHeaderMap.get(httpField.getName());

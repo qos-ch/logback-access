@@ -13,8 +13,6 @@
  */
 package ch.qos.logback.access.jetty;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
@@ -26,9 +24,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.util.Callback;
 
 public class JettyFixtureBase {
