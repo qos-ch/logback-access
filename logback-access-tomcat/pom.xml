@@ -57,14 +57,14 @@
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-catalina</artifactId>
-      <version>${tomcat_10_0.version}</version>
+      <version>${tomcat_10_1.version}</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-coyote</artifactId>
-      <version>${tomcat_10_0.version}</version>
+      <version>${tomcat_10_1.version}</version>
       <scope>provided</scope>
     </dependency>
 
