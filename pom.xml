@@ -346,9 +346,9 @@
             <version>${central-publishing-maven-plugin.version}</version>
             <extensions>true</extensions>
             <configuration>
-                <publishingServerId>central</publishingServerId>
-                <excludeArtifacts>logback-access-common-blackbox,logback-access-jetty-blackbox,
-                    logback-access-tomcat_10_1_blackbox, logback-access-tomcat_11_0_blackbox</excludeArtifacts>
+              <publishingServerId>central</publishingServerId>
+              <!-- new lines are apparently not tolerated -->
+              <excludeArtifacts>logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox,logback-access-jetty-blackbox,logback-access-jetty12_blackbox</excludeArtifacts>
             </configuration>
       </plugin>
     </plugins>
