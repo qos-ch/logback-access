@@ -1,0 +1,25 @@
+<configuration>
+
+    <import class="ch.qos.logback.access.common.PatternLayoutEncoder"/>
+    <import class="ch.qos.logback.core.FileAppender"/>
+
+
+    <appender name="FILE1" class="FileAppender">
+        <file>${outputTargetKey}</file>
+        <encoder class="PatternLayoutEncoder">
+            <pattern>%protocol %n</pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE2" class="FileAppender">
+        <file>${outputTargetKey}</file>
+        <encoder class="PatternLayoutEncoder">
+            <pattern>%protocol %n</pattern>
+        </encoder>
+    </appender>
+
+    <appender-ref ref="FILE1" />
+    <appender-ref ref="FILE2" />
+
+</configuration>

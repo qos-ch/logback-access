@@ -58,7 +58,7 @@ public class JoranConfiguratorTest {
     @Test
     public void smoke() throws Exception {
         configure(CommonBlackboxConstants.TEST_DIR_PREFIX + "input/joran/smoke.xml");
-        //StatusPrinter.print(context);
+        StatusPrinter.print(context);
         ListAppender<IAccessEvent> listAppender = (ListAppender<IAccessEvent>) context.getAppender("LIST");
         assertNotNull(listAppender);
         IAccessEvent event = DummyAccessEventBuilder.buildNewDefaultAccessEvent();

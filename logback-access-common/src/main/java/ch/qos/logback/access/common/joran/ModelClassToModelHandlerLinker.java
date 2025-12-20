@@ -20,11 +20,7 @@ import ch.qos.logback.core.Context;
 import ch.qos.logback.core.joran.ModelClassToModelHandlerLinkerBase;
 import ch.qos.logback.core.model.AppenderModel;
 import ch.qos.logback.core.model.AppenderRefModel;
-import ch.qos.logback.core.model.processor.AppenderModelHandler;
-import ch.qos.logback.core.model.processor.AppenderRefDependencyAnalyser;
-import ch.qos.logback.core.model.processor.AppenderRefModelHandler;
-import ch.qos.logback.core.model.processor.DefaultProcessor;
-import ch.qos.logback.core.model.processor.RefContainerDependencyAnalyser;
+import ch.qos.logback.core.model.processor.*;
 
 /**
  * For a given DefaultProcessor instance link a {@link ch.qos.logback.core.model.Model Model} class to a
@@ -47,9 +43,9 @@ public class ModelClassToModelHandlerLinker extends ModelClassToModelHandlerLink
         defaultProcessor.addHandler(AppenderModel.class, AppenderModelHandler::makeInstance);
         defaultProcessor.addHandler(AppenderRefModel.class, AppenderRefModelHandler::makeInstance);
 
-        defaultProcessor.addAnalyser(AppenderModel.class,
-                () -> new RefContainerDependencyAnalyser(context, AppenderModel.class));
-        defaultProcessor.addAnalyser(AppenderRefModel.class, () -> new AppenderRefDependencyAnalyser(context));
+        defaultProcessor.addAnalyser(ConfigurationModel.class, () -> new AppenderRefDependencyAnalyser(context));
+
+        defaultProcessor.addAnalyser(AppenderModel.class,    () -> new FileCollisionAnalyser(context));
 
         sealModelFilters(defaultProcessor);
     }
