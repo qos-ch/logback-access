@@ -36,9 +36,15 @@ class TeeServletInputStream extends ServletInputStream {
         try {
             originalSIS = request.getInputStream();
             inputBuffer = consumeBufferAndReturnAsByteArray(originalSIS);
-            this.in = new ByteArrayInputStream(inputBuffer);
+            in = new ByteArrayInputStream(inputBuffer);
         } catch (IOException e) {
-            e.printStackTrace();
+            inputBuffer = new byte[0];
+            in = new InputStream() {
+                @Override
+                public int read() throws IOException {
+                    throw e;
+                }
+            };
         } finally {
             closeStream(originalSIS);
         }
