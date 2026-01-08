@@ -4,7 +4,6 @@ import ch.qos.logback.access.common.blackbox.CommonBlackboxConstants;
 import ch.qos.logback.access.common.blackbox.testUtil.MiniStatusChecker;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
 import ch.qos.logback.access.common.spi.AccessContext;
-import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.FileAppender;
