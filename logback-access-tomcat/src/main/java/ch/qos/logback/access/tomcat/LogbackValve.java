@@ -33,6 +33,7 @@ import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.core.spi.ConfigurationEvent;
 import ch.qos.logback.core.spi.ConfigurationEventListener;
+import ch.qos.logback.core.util.VersionUtil;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 
@@ -131,6 +132,9 @@ public class LogbackValve extends ValveBase
 
     @Override
     public void startInternal() throws LifecycleException {
+
+        versionCheck();
+
         scheduledExecutorService = ExecutorServiceUtil.newScheduledExecutorService();
 
         String filename;
@@ -168,6 +172,19 @@ public class LogbackValve extends ValveBase
 
         started = true;
         setState(LifecycleState.STARTING);
+    }
+
+    static String LOGBACK_ACCESS_TOMCAT_NAME = "logback-access-tomcat";
+    static String LOGBACK_ACCESS_COMMON_NAME = "logback-access-common";
+    static String LOGBACK_CORE_NAME = "logback-core";
+
+    private void versionCheck() {
+        try {
+            VersionUtil.checkForVersionEquality(this, this.getClass(), AccessConstants.class, LOGBACK_ACCESS_TOMCAT_NAME, LOGBACK_ACCESS_COMMON_NAME);
+            VersionUtil.compareExpectedAndFoundVersion(this, AccessConstants.class, CoreConstants.class, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
+        } catch(NoClassDefFoundError e) {
+            addWarn("Missing ch.logback.core.util.VersionUtil class on classpath. The version of logback-core is probably earlier than 1.5.25.");
+        }
     }
 
     private URL fileToUrl(File configFile) {

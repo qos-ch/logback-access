@@ -13,6 +13,7 @@
  */
 package ch.qos.logback.access.jetty;
 
+import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
 import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
@@ -34,6 +35,7 @@ import ch.qos.logback.core.status.WarnStatus;
 import ch.qos.logback.core.util.FileUtil;
 import ch.qos.logback.core.util.OptionHelper;
 import ch.qos.logback.core.util.StatusPrinter;
+import ch.qos.logback.core.util.VersionUtil;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Response;
@@ -295,12 +297,16 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
         }
     }
 
+    static String LOGBACK_ACCESS_JETTY11_NAME = "logback-access-jetty11";
+    static String LOGBACK_ACCESS_COMMON_NAME = "logback-access-common";
+    static String LOGBACK_CORE_NAME = "logback-core";
+
     private void versionCheck() {
         try {
-            VersionCompatibilityChecker.checkLogbackCoreVersionCompatibility(this);
-            VersionCompatibilityChecker.checkAccessCommonAndDependentModuleVersionEquality(this, "logback-access-jetty12");
+            VersionUtil.checkForVersionEquality(this, this.getClass(), AccessConstants.class, LOGBACK_ACCESS_JETTY11_NAME, LOGBACK_ACCESS_COMMON_NAME);
+            VersionUtil.compareExpectedAndFoundVersion(this, AccessConstants.class, CoreConstants.class, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
         } catch(NoClassDefFoundError e) {
-            addWarn("Missing VersionCompatibilityChecker class on classpath. The version of logback-access-common is probably too old.");
+            addWarn("Missing ch.logback.core.util.VersionUtil class on classpath. The version of logback-core is probably earlier than 1.5.25.");
         }
     }
 

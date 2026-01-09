@@ -89,7 +89,7 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>dependency-versions.properties</include>
+                    <include>logback-access-common-dependees.properties</include>
                 </includes>
             </resource>
         </resources>
