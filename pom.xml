@@ -3,482 +3,497 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ch.qos.logback.access</groupId>
-  <artifactId>parent</artifactId>
-  <version>2.0.9-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <groupId>ch.qos.logback.access</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.0.9-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-  <name>Logback-Access Parent</name>
-  <description>logback-access project parent pom.xml file</description>
+    <name>Logback-Access Parent</name>
+    <description>logback-access project parent pom.xml file</description>
 
-  <url>http://logback.qos.ch</url>
+    <url>http://logback.qos.ch</url>
 
-  <organization>
-    <name>QOS.ch</name>
-    <url>http://www.qos.ch</url>
-  </organization>
-  <inceptionYear>2005</inceptionYear>
+    <organization>
+        <name>QOS.ch</name>
+        <url>http://www.qos.ch</url>
+    </organization>
+    <inceptionYear>2005</inceptionYear>
 
-  <licenses>
-    <license>
-      <name>Eclipse Public License - v 1.0</name>
-      <url>http://www.eclipse.org/legal/epl-v10.html</url>
-    </license>
+    <licenses>
+        <license>
+            <name>Eclipse Public License - v 1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+        </license>
 
-    <license>
-      <name>GNU Lesser General Public License</name>
-      <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html</url>
-    </license>
-  </licenses>
+        <license>
+            <name>GNU Lesser General Public License</name>
+            <url>http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html</url>
+        </license>
+    </licenses>
 
-  <scm>
-    <url>https://github.com/qos-ch/logback</url>
-    <connection>scm:git@github.com:qos-ch/logback-access.git</connection>
-  </scm>
+    <scm>
+        <url>https://github.com/qos-ch/logback</url>
+        <connection>scm:git@github.com:qos-ch/logback-access.git</connection>
+    </scm>
 
-  <modules>
-    <module>logback-access-common</module>
-    <module>logback-access-common-blackbox</module>
-    <module>logback-access-tomcat</module>
-    <module>logback-access-tomcat_10_1_blackbox</module>
-    <module>logback-access-tomcat_11_0_blackbox</module>
-    <module>logback-access-jetty11</module>
-    <module>logback-access-jetty12</module>
-    <module>logback-access-jetty12-blackbox</module>
-  </modules>
+    <modules>
+        <module>logback-access-common</module>
+        <module>logback-access-common-blackbox</module>
+        <module>logback-access-tomcat</module>
+        <module>logback-access-tomcat_10_1_blackbox</module>
+        <module>logback-access-tomcat_11_0_blackbox</module>
+        <module>logback-access-jetty11</module>
+        <module>logback-access-jetty12</module>
+        <module>logback-access-jetty12-blackbox</module>
+    </modules>
 
-  <properties>
-    <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
-    <project.build.outputTimestamp>2026-01-08T17:45:57Z</project.build.outputTimestamp>
+    <properties>
+        <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
+        <project.build.outputTimestamp>2026-01-08T17:45:57Z</project.build.outputTimestamp>
 
-    <logback.core.version>1.5.24</logback.core.version>
-    <slf4j.version>2.0.17</slf4j.version>
-    <janino.version>3.1.8</janino.version>
+        <logback.core.version>1.5.24</logback.core.version>
+        <slf4j.version>2.0.17</slf4j.version>
+        <janino.version>3.1.8</janino.version>
 
-    <!-- minimal JDK version at runtime -->
-    <jdk.version>11</jdk.version>
-    <maven.compiler.release>${jdk.version}</maven.compiler.release>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- minimal JDK version at runtime -->
+        <jdk.version>11</jdk.version>
+        <maven.compiler.release>${jdk.version}</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <junit-jupiter-api.version>5.9.1</junit-jupiter-api.version>
-    <junit-vintage-engine.version>5.9.1</junit-vintage-engine.version>
-    <junit-jupiter-params.version>5.9.1</junit-jupiter-params.version>
-    <assertj-core.version>3.23.1</assertj-core.version>
-    <hamcrest.version>2.2</hamcrest.version>
-    <jakarta.mail.version>2.1.0</jakarta.mail.version>
-    <jakarta.activation.version>2.1.0</jakarta.activation.version>
-    <jakarta.angus-mail.version>1.0.0</jakarta.angus-mail.version>
+        <junit-jupiter-api.version>5.9.1</junit-jupiter-api.version>
+        <junit-vintage-engine.version>5.9.1</junit-vintage-engine.version>
+        <junit-jupiter-params.version>5.9.1</junit-jupiter-params.version>
+        <assertj-core.version>3.23.1</assertj-core.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <jakarta.mail.version>2.1.0</jakarta.mail.version>
+        <jakarta.activation.version>2.1.0</jakarta.activation.version>
+        <jakarta.angus-mail.version>1.0.0</jakarta.angus-mail.version>
 
-<!--    <jakarta.servlet.version>5.0.0</jakarta.servlet.version>-->
-    <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
-    <greenmail.version>2.0.0-alpha-1</greenmail.version>
+        <!--    <jakarta.servlet.version>5.0.0</jakarta.servlet.version>-->
+        <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+        <greenmail.version>2.0.0-alpha-1</greenmail.version>
 
-    <tomcat_10_1.version>10.1.48</tomcat_10_1.version>
-    <tomcat_11_0.version>11.0.13</tomcat_11_0.version>
-    <jetty11.version>11.0.24</jetty11.version>
-    <jetty12.version>12.0.23</jetty12.version>
-    <jackson.version>2.15.0</jackson.version>
+        <tomcat_10_1.version>10.1.48</tomcat_10_1.version>
+        <tomcat_11_0.version>11.0.13</tomcat_11_0.version>
+        <jetty11.version>11.0.24</jetty11.version>
+        <jetty12.version>12.0.23</jetty12.version>
+        <jackson.version>2.15.0</jackson.version>
 
-    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-    <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
-    <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
-    <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
-    <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-    <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-    <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
+        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <maven-javadoc-plugin.version>3.3.0</maven-javadoc-plugin.version>
+        <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
+        <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
+        <maven-jxr-plugin.version>3.6.0</maven-jxr-plugin.version>
 
-    <maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
-    <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
-    <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
-    <maven-bundle-plugin.version>5.1.9</maven-bundle-plugin.version>
-    <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
-    <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
-  </properties>
+        <maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
+        <maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
+        <maven-dependency-plugin.version>3.2.0</maven-dependency-plugin.version>
+        <maven-bundle-plugin.version>5.1.9</maven-bundle-plugin.version>
+        <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+    </properties>
 
-  <developers>
-    <developer>
-      <id>ceki</id>
-      <name>Ceki Gulcu</name>
-      <email>ceki@qos.ch</email>
-    </developer>
-  </developers>
-
-  <dependencies>
-
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${assertj-core.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit-jupiter-api.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-jupiter-api.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-library</artifactId>
-      <version>${hamcrest.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-
-
-  </dependencies>
-
-  <dependencyManagement>
+    <developers>
+        <developer>
+            <id>ceki</id>
+            <name>Ceki Gulcu</name>
+            <email>ceki@qos.ch</email>
+        </developer>
+    </developers>
 
     <dependencies>
-      <dependency>
-        <groupId>ch.qos.logback.access</groupId>
-        <artifactId>logback-access-common</artifactId>
-        <version>${project.version}</version>
-      </dependency>
 
-      <!-- start of dependencies duplicated from logback-bom/pom.xml -->
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-core</artifactId>
-        <version>${logback.core.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter-api.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>${logback.core.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter-api.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-      <dependency>
-        <groupId>jakarta.servlet</groupId>
-        <artifactId>jakarta.servlet-api</artifactId>
-        <version>${jakarta.servlet.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>jakarta.mail</groupId>
-        <artifactId>jakarta.mail-api</artifactId>
-        <version>${jakarta.mail.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>jakarta.activation</groupId>
-        <artifactId>jakarta.activation-api</artifactId>
-        <version>${jakarta.activation.version}</version>
-      </dependency>
-
-
-      <dependency>
-        <groupId>org.codehaus.janino</groupId>
-        <artifactId>janino</artifactId>
-        <version>${janino.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.janino</groupId>
-        <artifactId>commons-compiler</artifactId>
-        <version>${janino.version}</version>
-      </dependency>
 
     </dependencies>
-  </dependencyManagement>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>ch.qos.logback.access</groupId>
+                <artifactId>logback-access-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- start of dependencies duplicated from logback-bom/pom.xml -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.mail</groupId>
+                <artifactId>jakarta.mail-api</artifactId>
+                <version>${jakarta.mail.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.activation</groupId>
+                <artifactId>jakarta.activation-api</artifactId>
+                <version>${jakarta.activation.version}</version>
+            </dependency>
 
 
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh</artifactId>
-        <version>2.10</version>
-      </extension>
-    </extensions>
+            <dependency>
+                <groupId>org.codehaus.janino</groupId>
+                <artifactId>janino</artifactId>
+                <version>${janino.version}</version>
+            </dependency>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>${maven-deploy-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>${maven-install-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>${maven-resources-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin.version}</version>
-        </plugin>
+            <dependency>
+                <groupId>org.codehaus.janino</groupId>
+                <artifactId>commons-compiler</artifactId>
+                <version>${janino.version}</version>
+            </dependency>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jxr-plugin</artifactId>
-          <version>${maven-jxr-plugin.version}</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>${maven-jar-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven-javadoc-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>${maven-dependency-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>${maven-release-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>${maven-source-plugin.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
-    <plugins>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-
-        <configuration>
-          <release>${jdk.version}</release>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-
-        <configuration>
-          <linksource>true</linksource>
-          <skippedModules>
-            logback-access-jetty11,logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox
-          </skippedModules>
-          <doclint>none</doclint>
-          <links>
-            <link>
-              http://docs.oracle.com/javase/7/docs/api/
-            </link>
-          </links>
-          <groups>
-            <group>
-              <title>Logback Access</title>
-              <packages>ch.qos.logback.access:ch.qos.logback.access.*
-              </packages>
-            </group>
-          </groups>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <configuration>
-          <linkJavadoc>false</linkJavadoc>
-          <excludes>
-              <!-- exclude blackbox modules. Did not find another way to do this. -->
-              <exclude>**/ch/qos/logback/access/tomcat_10_1/*.java</exclude>
-              <exclude>**/ch/qos/logback/access/tomcat_11_0/*.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-
-      <plugin>
-            <groupId>org.sonatype.central</groupId>
-            <artifactId>central-publishing-maven-plugin</artifactId>
-            <version>${central-publishing-maven-plugin.version}</version>
-            <extensions>true</extensions>
-            <configuration>
-              <publishingServerId>central</publishingServerId>
-              <!-- new lines are apparently not tolerated -->
-              <excludeArtifacts>logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox,logback-access-jetty-blackbox,logback-access-jetty12_blackbox</excludeArtifacts>
-            </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <distributionManagement>
-
-    <repository>
-      <id>sonatype-nexus-staging</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-
-  </distributionManagement>
-
-  <reporting>
-    <plugins>
+        </dependencies>
+    </dependencyManagement>
 
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.10</version>
+            </extension>
+        </extensions>
 
-        <configuration>
-          <aggregate>true</aggregate>
-          <linkJavadoc>true</linkJavadoc>
-          <linksource>true</linksource>
-          <doclint>none</doclint>
-          <sourceFileExcludes>
-            <sourceFileExclude>**/module-info.java</sourceFileExclude>
-          </sourceFileExcludes>
-          <links>
-            <link>
-              http://docs.oracle.com/javase/7/docs/api/
-            </link>
-          </links>
-          <groups>
-            <group>
-              <title>Logback Access</title>
-              <packages>ch.qos.logback.access:ch.qos.logback.access.*
-              </packages>
-            </group>
-          </groups>
-        </configuration>
-      </plugin>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>${maven-jxr-plugin.version}</version>
+                </plugin>
 
-    </plugins>
-  </reporting>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${maven-dependency-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${maven-release-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${maven-source-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
-  <profiles>
-    <profile>
-      <id>license</id>
-      <build>
         <plugins>
-          <plugin>
-            <groupId>com.mycila</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <version>${license-maven-plugin.version}</version>
-            <configuration>
-              <header>src/main/licenseHeader.txt</header>
-              <quiet>false</quiet>
-              <failIfMissing>true</failIfMissing>
-              <aggregate>true</aggregate>
-              <includes>
-                <include>src/**/*.java</include>
-                <include>src/**/*.groovy</include>
-              </includes>
-              <useDefaultExcludes>true</useDefaultExcludes>
-              <useDefaultMapping>true</useDefaultMapping>
-              <properties>
-                <year>1999</year>
-              </properties>
-              <headerDefinitions>
-                <headerDefinition>src/main/javadocHeaders.xml</headerDefinition>
-              </headerDefinitions>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
 
-    <profile>
-      <id>javadocjar</id>
-      <build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+
+                <configuration>
+                    <release>${jdk.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+
+                <configuration>
+                    <linksource>true</linksource>
+                    <skippedModules>
+                        logback-access-jetty11,logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox
+                    </skippedModules>
+                    <doclint>none</doclint>
+                    <links>
+                        <link>
+                            http://docs.oracle.com/javase/7/docs/api/
+                        </link>
+                    </links>
+                    <groups>
+                        <group>
+                            <title>Logback Access</title>
+                            <packages>ch.qos.logback.access:ch.qos.logback.access.*
+                            </packages>
+                        </group>
+                    </groups>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <configuration>
+                    <linkJavadoc>false</linkJavadoc>
+                    <excludes>
+                        <!-- exclude blackbox modules. Did not find another way to do this. -->
+                        <exclude>**/ch/qos/logback/access/tomcat_10_1/*.java</exclude>
+                        <exclude>**/ch/qos/logback/access/tomcat_11_0/*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central-publishing-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <!-- new lines are apparently not tolerated -->
+                    <excludeArtifacts>
+                        logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox,logback-access-jetty-blackbox,logback-access-jetty12_blackbox
+                    </excludeArtifacts>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+
+    </distributionManagement>
+
+    <reporting>
         <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>${maven-javadoc-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <doclint>none</doclint>
-              <sourceFileExcludes>
-                <sourceFileExclude>**/module-info.java</sourceFileExclude>
-              </sourceFileExcludes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
 
-    <profile>
-      <id>sign-artifacts</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>1.6</version>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
 
-  </profiles>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <linkJavadoc>true</linkJavadoc>
+                    <linksource>true</linksource>
+                    <doclint>none</doclint>
+                    <sourceFileExcludes>
+                        <sourceFileExclude>**/module-info.java</sourceFileExclude>
+                    </sourceFileExcludes>
+                    <links>
+                        <link>
+                            http://docs.oracle.com/javase/7/docs/api/
+                        </link>
+                    </links>
+                    <groups>
+                        <group>
+                            <title>Logback Access</title>
+                            <packages>ch.qos.logback.access:ch.qos.logback.access.*
+                            </packages>
+                        </group>
+                    </groups>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </reporting>
+
+    <profiles>
+        <profile>
+            <id>license</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <version>${license-maven-plugin.version}</version>
+                        <configuration>
+                            <header>src/main/licenseHeader.txt</header>
+                            <quiet>false</quiet>
+                            <failIfMissing>true</failIfMissing>
+                            <aggregate>true</aggregate>
+                            <includes>
+                                <include>src/**/*.java</include>
+                                <include>src/**/*.groovy</include>
+                            </includes>
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                            <useDefaultMapping>true</useDefaultMapping>
+                            <properties>
+                                <year>1999</year>
+                            </properties>
+                            <headerDefinitions>
+                                <headerDefinition>src/main/javadocHeaders.xml</headerDefinition>
+                            </headerDefinitions>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>javadocjar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven-javadoc-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <doclint>none</doclint>
+                            <sourceFileExcludes>
+                                <sourceFileExclude>**/module-info.java</sourceFileExclude>
+                            </sourceFileExcludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sign-artifacts</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
 
 </project>

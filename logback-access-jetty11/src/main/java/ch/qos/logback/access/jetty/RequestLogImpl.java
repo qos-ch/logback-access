@@ -16,6 +16,7 @@ package ch.qos.logback.access.jetty;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
 import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
+import ch.qos.logback.access.common.util.VersionCompatibilityChecker;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.ContextBase;
 import ch.qos.logback.core.CoreConstants;
@@ -29,6 +30,7 @@ import ch.qos.logback.core.spi.FilterAttachableImpl;
 import ch.qos.logback.core.spi.FilterReply;
 import ch.qos.logback.core.status.ErrorStatus;
 import ch.qos.logback.core.status.InfoStatus;
+import ch.qos.logback.core.status.WarnStatus;
 import ch.qos.logback.core.util.FileUtil;
 import ch.qos.logback.core.util.OptionHelper;
 import ch.qos.logback.core.util.StatusPrinter;
@@ -43,6 +45,8 @@ import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import static ch.qos.logback.core.CoreConstants.DEFAULT_CONTEXT_NAME;
 
 /**
  * This class is logback's implementation of jetty's RequestLog interface.
@@ -246,6 +250,7 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
     boolean quiet = false;
 
     public RequestLogImpl() {
+        setName(DEFAULT_CONTEXT_NAME);
         putObject(CoreConstants.EVALUATOR_MAP, new HashMap<String, EventEvaluator<?>>());
     }
 
@@ -266,6 +271,9 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
     protected void addInfo(String msg) {
         getStatusManager().add(new InfoStatus(msg, this));
     }
+    protected void addWarn(String msg) {
+        getStatusManager().add(new WarnStatus(msg, this));
+    }
 
     private void addError(String msg) {
         getStatusManager().add(new ErrorStatus(msg, this));
@@ -274,6 +282,7 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
     @Override
     public void start() {
         state = State.STARTING;
+        versionCheck();
         try {
             configure();
             if (!isQuiet()) {
@@ -283,6 +292,15 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
         } catch (Throwable t) {
             t.printStackTrace();
             state = State.FAILED;
+        }
+    }
+
+    private void versionCheck() {
+        try {
+            VersionCompatibilityChecker.checkLogbackCoreVersionCompatibility(this);
+            VersionCompatibilityChecker.checkAccessCommonAndDependentModuleVersionEquality(this, "logback-access-jetty12");
+        } catch(NoClassDefFoundError e) {
+            addWarn("Missing VersionCompatibilityChecker class on classpath. The version of logback-access-common is probably too old.");
         }
     }
 

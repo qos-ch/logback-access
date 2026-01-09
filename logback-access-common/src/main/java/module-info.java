@@ -29,5 +29,8 @@ module ch.qos.logback.access.common {
 
   exports ch.qos.logback.access.common.spi;
 
+  exports ch.qos.logback.access.common.util;
+
+
 }
 
