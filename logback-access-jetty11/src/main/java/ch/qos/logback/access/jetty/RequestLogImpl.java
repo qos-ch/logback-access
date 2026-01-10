@@ -17,7 +17,6 @@ import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
 import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
-import ch.qos.logback.access.common.util.VersionCompatibilityChecker;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.ContextBase;
 import ch.qos.logback.core.CoreConstants;
