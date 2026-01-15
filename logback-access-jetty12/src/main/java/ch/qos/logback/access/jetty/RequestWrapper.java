@@ -1,22 +1,9 @@
 package ch.qos.logback.access.jetty;
 
 import ch.qos.logback.access.common.spi.WrappedHttpRequest;
-import jakarta.servlet.AsyncContext;
-import jakarta.servlet.DispatcherType;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletConnection;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletInputStream;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpUpgradeHandler;
-import jakarta.servlet.http.Part;
-import org.eclipse.jetty.http.HttpCookie;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.Request;
@@ -24,17 +11,10 @@ import org.eclipse.jetty.server.Session;
 import org.eclipse.jetty.util.Fields;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.time.DateTimeException;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ch.qos.logback.access.common.spi.IAccessEvent.NA;
@@ -42,12 +22,11 @@ import static ch.qos.logback.access.jetty.HeaderUtil.buildHeaderMap;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
+    private static final Cookie[] EMPTY_COOKIE_ARRAY = new Cookie[0];
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    static final Cookie[] EMPTY_COOKIE_ARRAY = new Cookie[0];
-    static final String[] EMPTY_STRING_ARRAY = new String[0];
-
-    Request request;
-    StringBuffer requestURL;
+    private final Request request;
+    private StringBuffer requestURL;
 
     public RequestWrapper(Request request) {
         this.request = request;
@@ -55,37 +34,52 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getAuthType() {
-        return null;
+        return Optional.ofNullable(request.getHeaders().get(HttpHeader.AUTHORIZATION))
+                .map(s -> s.split(" ")[0])
+                .orElse(null);
     }
 
     @Override
     public Cookie[] getCookies() {
-        List<HttpCookie> httpCookies = Request.getCookies(request);
-        List<Cookie> cookieList = httpCookies.stream().map(httpCookie -> new Cookie(httpCookie.getName(), httpCookie.getValue())).collect(
-                Collectors.toList());
+        return Request.getCookies(request)
+                .stream()
+                .map(httpCookie -> new Cookie(httpCookie.getName(), httpCookie.getValue()))
+                .collect(Collectors.toList())
+                .toArray(EMPTY_COOKIE_ARRAY);
+    }
 
-        return  cookieList.toArray(EMPTY_COOKIE_ARRAY);
+    private Optional<String> getOptionalHeader(String name) {
+        return Optional.ofNullable(request.getHeaders().get(name));
     }
 
     @Override
     public long getDateHeader(String name) {
-        return 0;
+        return getOptionalHeader(name).map(header -> {
+                    try {
+                        var headerLong = Long.parseLong(header);
+                        Instant.ofEpochSecond(headerLong);
+
+                        return headerLong;
+                    } catch (NumberFormatException | DateTimeException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                })
+                .orElse(-1L);
     }
 
     @Override
     public String getHeader(String name) {
-        return null;
+        return request.getHeaders().get(name);
     }
 
     @Override
     public Enumeration<String> getHeaders(String name) {
-        return null;
+        return request.getHeaders().getValues(name);
     }
 
     @Override
     public Enumeration<String> getHeaderNames() {
-
-        return null;
+        return Collections.enumeration(request.getHeaders().getFieldNamesCollection());
     }
 
     @Override
@@ -95,7 +89,8 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public int getIntHeader(String name) {
-        return 0;
+        return getOptionalHeader(name).map(Integer::parseInt)
+                .orElse(-1);
     }
 
     @Override
@@ -125,7 +120,8 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getRemoteUser() {
-        return null;
+        return getPrincipal().map(Principal::getName)
+                .orElse(null);
     }
 
     @Override
@@ -133,9 +129,14 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
         return false;
     }
 
+    private Optional<Principal> getPrincipal() {
+        return Optional.ofNullable(Request.getAuthenticationState(request))
+                .map(Request.AuthenticationState::getUserPrincipal);
+    }
+
     @Override
     public Principal getUserPrincipal() {
-        return null;
+        return getPrincipal().orElse(null);
     }
 
     @Override
@@ -164,12 +165,9 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public String getSessionID() {
-        Session session = request.getSession(false);
-        if (session == null) {
-            return NA;
-        } else {
-            return session.getId();
-        }
+        return Optional.ofNullable(request.getSession(false))
+                .map(Session::getId)
+                .orElse(NA);
     }
 
     @Override
@@ -203,32 +201,30 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     }
 
     @Override
-    public boolean authenticate(HttpServletResponse response) throws IOException, ServletException {
+    public boolean authenticate(HttpServletResponse response) {
         return false;
     }
 
     @Override
-    public void login(String username, String password) throws ServletException {
-
+    public void login(String username, String password) {
     }
 
     @Override
-    public void logout() throws ServletException {
-
+    public void logout() {
     }
 
     @Override
-    public Collection<Part> getParts() throws IOException, ServletException {
+    public Collection<Part> getParts() {
         return null;
     }
 
     @Override
-    public Part getPart(String name) throws IOException, ServletException {
+    public Part getPart(String name) {
         return null;
     }
 
     @Override
-    public <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) throws IOException, ServletException {
+    public <T extends HttpUpgradeHandler> T upgrade(Class<T> handlerClass) {
         return null;
     }
 
@@ -239,8 +235,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public Enumeration<String> getAttributeNames() {
-        Set<String> attributeNamesSet = request.getAttributeNameSet();
-        return Collections.enumeration(attributeNamesSet);
+        return Collections.enumeration(request.getAttributeNameSet());
     }
 
     @Override
@@ -249,38 +244,34 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     }
 
     @Override
-    public void setCharacterEncoding(String env) throws UnsupportedEncodingException {
-
+    public void setCharacterEncoding(String env) {
     }
 
     @Override
     public int getContentLength() {
-        return 0;
+        return Math.toIntExact(request.getLength());
     }
 
     @Override
     public long getContentLengthLong() {
-        return 0;
+        return request.getLength();
     }
 
     @Override
     public String getContentType() {
-        return null;
+        return getHeader("Content-Type");
     }
 
     @Override
-    public ServletInputStream getInputStream() throws IOException {
+    public ServletInputStream getInputStream() {
         return null;
     }
 
     @Override
     public Map<String, String[]> buildRequestParameterMap() {
-        Map<String, String[]> results = new HashMap<>();
-        Fields allParameters = Request.extractQueryParameters(request, UTF_8);
-        for (Fields.Field field : allParameters) {
-           results.put(field.getName(), field.getValues().toArray(EMPTY_STRING_ARRAY));
-        }
-        return results;
+        return Request.extractQueryParameters(request, UTF_8)
+                .stream()
+                .collect(Collectors.toUnmodifiableMap(Fields.Field::getName, field -> field.getValues().toArray(EMPTY_STRING_ARRAY)));
     }
 
     @Override
@@ -324,7 +315,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     }
 
     @Override
-    public BufferedReader getReader() throws IOException {
+    public BufferedReader getReader() {
         return null;
     }
 
@@ -340,12 +331,10 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
 
     @Override
     public void setAttribute(String name, Object o) {
-
     }
 
     @Override
     public void removeAttribute(String name) {
-
     }
 
     @Override
@@ -399,8 +388,7 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
     }
 
     @Override
-    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse)
-            throws IllegalStateException {
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
         return null;
     }
 
@@ -429,20 +417,18 @@ public class RequestWrapper implements HttpServletRequest, WrappedHttpRequest {
         return request.getConnectionMetaData().getId() + "#" + request.getId();
     }
 
-
     @Override
     public String getProtocolRequestId() {
-       HttpVersion httpVersion = request.getConnectionMetaData().getHttpVersion();
-       if(httpVersion == HttpVersion.HTTP_2 || httpVersion == (HttpVersion.HTTP_3)) {
-           return request.getId();
-       } else {
-           return NA;
-       }
+        var httpVersion = request.getConnectionMetaData().getHttpVersion();
+        if (httpVersion == HttpVersion.HTTP_2 || httpVersion == (HttpVersion.HTTP_3)) {
+            return request.getId();
+        } else {
+            return NA;
+        }
     }
 
     @Override
     public ServletConnection getServletConnection() {
         return null;
     }
-
 }
