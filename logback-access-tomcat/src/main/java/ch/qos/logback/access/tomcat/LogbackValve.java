@@ -31,8 +31,10 @@ import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
 import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
+import ch.qos.logback.access.common.util.AccessCommonVersionUtil;
 import ch.qos.logback.core.spi.ConfigurationEvent;
 import ch.qos.logback.core.spi.ConfigurationEventListener;
+import ch.qos.logback.core.util.CoreVersionUtil;
 import ch.qos.logback.core.util.VersionUtil;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -180,10 +182,14 @@ public class LogbackValve extends ValveBase
 
     private void versionCheck() {
         try {
-            VersionUtil.checkForVersionEquality(this, this.getClass(), AccessConstants.class, LOGBACK_ACCESS_TOMCAT_NAME, LOGBACK_ACCESS_COMMON_NAME);
-            VersionUtil.compareExpectedAndFoundVersion(this, AccessConstants.class, CoreConstants.class, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
+            String coreVersion = CoreVersionUtil.getCoreVersionBySelfDeclaredProperties();
+            String accessCommonVersion = AccessCommonVersionUtil.getAccessCommonVersionBySelfDeclaredProperties();
+            VersionUtil.checkForVersionEquality(this, this.getClass(), accessCommonVersion, LOGBACK_ACCESS_TOMCAT_NAME, LOGBACK_ACCESS_COMMON_NAME);
+            VersionUtil.compareExpectedAndFoundVersion(this, coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
         } catch(NoClassDefFoundError e) {
             addWarn("Missing ch.logback.core.util.VersionUtil class on classpath. The version of logback-core is probably earlier than 1.5.25.");
+        } catch(NoSuchMethodError e) {
+            addWarn(e.getMessage() + ". The version of logback-core is probably earlier than 1.5.26.");
         }
     }
 

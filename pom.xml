@@ -53,7 +53,7 @@
         <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
         <project.build.outputTimestamp>2026-01-08T17:45:57Z</project.build.outputTimestamp>
 
-        <logback.core.version>1.5.25-SNAPSHOT</logback.core.version>
+        <logback.core.version>1.5.26</logback.core.version>
         <slf4j.version>2.0.17</slf4j.version>
         <janino.version>3.1.8</janino.version>
 

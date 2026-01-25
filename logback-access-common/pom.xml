@@ -92,6 +92,14 @@
                     <include>logback-access-common-dependees.properties</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>ch/qos/logback/access/common/logback-access-common-version.properties</include>
+                </includes>
+            </resource>
+
         </resources>
         <plugins>
             <plugin>

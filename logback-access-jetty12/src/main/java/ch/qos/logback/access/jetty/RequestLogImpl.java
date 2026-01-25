@@ -17,6 +17,7 @@ import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.access.common.joran.JoranConfigurator;
 import ch.qos.logback.access.common.spi.AccessEvent;
 import ch.qos.logback.access.common.spi.IAccessEvent;
+import ch.qos.logback.access.common.util.AccessCommonVersionUtil;
 import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.ContextBase;
 import ch.qos.logback.core.CoreConstants;
@@ -31,6 +32,7 @@ import ch.qos.logback.core.spi.FilterReply;
 import ch.qos.logback.core.status.ErrorStatus;
 import ch.qos.logback.core.status.InfoStatus;
 import ch.qos.logback.core.status.WarnStatus;
+import ch.qos.logback.core.util.CoreVersionUtil;
 import ch.qos.logback.core.util.FileUtil;
 import ch.qos.logback.core.util.OptionHelper;
 import ch.qos.logback.core.util.StatusPrinter;
@@ -307,12 +309,17 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
 
     private void versionCheck() {
         try {
-            VersionUtil.checkForVersionEquality(this, this.getClass(), AccessConstants.class, LOGBACK_ACCESS_JETTY12_NAME, LOGBACK_ACCESS_COMMON_NAME);
-            VersionUtil.compareExpectedAndFoundVersion(this, AccessConstants.class, CoreConstants.class, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
+            String coreVersion = CoreVersionUtil.getCoreVersionBySelfDeclaredProperties();
+            String accessCommonVersion = AccessCommonVersionUtil.getAccessCommonVersionBySelfDeclaredProperties();
+            VersionUtil.checkForVersionEquality(this, this.getClass(), accessCommonVersion, LOGBACK_ACCESS_JETTY12_NAME, LOGBACK_ACCESS_COMMON_NAME);
+            VersionUtil.compareExpectedAndFoundVersion(this, coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
         } catch(NoClassDefFoundError e) {
             addWarn("Missing ch.logback.core.util.VersionUtil class on classpath. The version of logback-core is probably earlier than 1.5.25.");
+        } catch(NoSuchMethodError e) {
+            addWarn(e.getMessage() + ". The version of logback-core is probably earlier than 1.5.26.");
         }
     }
+
 
     protected void configure() {
         URL configURL = getConfigurationFileURL();

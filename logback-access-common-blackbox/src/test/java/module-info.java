@@ -18,7 +18,7 @@ module ch.qos.logback.access.common.blackbox {
     opens ch.qos.logback.access.common.blackbox.servlet to org.junit.platform.commons;
 
     opens ch.qos.logback.access.common.blackbox.spi to org.junit.platform.commons;
-
+    opens ch.qos.logback.access.common.blackbox.util to org.junit.platform.commons;
 
 
 }
