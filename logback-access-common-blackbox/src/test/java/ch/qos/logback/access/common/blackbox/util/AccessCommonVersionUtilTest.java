@@ -14,19 +14,38 @@
 
 package ch.qos.logback.access.common.blackbox.util;
 
+import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.access.common.util.AccessCommonVersionUtil;
+import ch.qos.logback.core.Context;
+import ch.qos.logback.core.ContextBase;
+import ch.qos.logback.core.util.CoreVersionUtil;
+import ch.qos.logback.core.util.VersionUtil;
 import org.junit.jupiter.api.Test;
 
+
+import static ch.qos.logback.access.common.AccessConstants.LOGBACK_CORE_NAME;
+import static ch.qos.logback.access.common.AccessConstants.LOGBACK_ACCESS_COMMON_NAME;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AccessCommonVersionUtilTest {
 
 
+    Context context = new ContextBase();
+
     @Test
-    void smoke() {
+    void testAccessCommonVersionBySelfDeclaredProperties() {
         String version = AccessCommonVersionUtil.getAccessCommonVersionBySelfDeclaredProperties();
         assertNotNull(version);
         assertTrue(version.startsWith("2.0"));
     }
+
+    @Test
+    void testExpectedAndFoundVersionOfCore() {
+        String coreVersion = CoreVersionUtil.getCoreVersionBySelfDeclaredProperties();
+        String accessCommonVersion = AccessCommonVersionUtil.getAccessCommonVersionBySelfDeclaredProperties();
+        VersionUtil.compareExpectedAndFoundVersion(context, coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
+    }
+
+
 }

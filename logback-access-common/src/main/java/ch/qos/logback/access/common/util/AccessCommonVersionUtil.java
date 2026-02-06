@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static ch.qos.logback.access.common.AccessConstants.LOGBACK_ACCESS_COMMON_NAME;
+
 /**
  * Utility class for retrieving version information about the "logback-access-common" module
  * based on the self-declared properties file.
@@ -31,7 +33,7 @@ public class AccessCommonVersionUtil {
 
 
     static public String getAccessCommonVersionBySelfDeclaredProperties() {
-        return getArtifactVersionBySelfDeclaredProperties(AccessConstants.class, "logback-access-common");
+        return getArtifactVersionBySelfDeclaredProperties(AccessConstants.class, LOGBACK_ACCESS_COMMON_NAME);
     }
 
     static public String getArtifactVersionBySelfDeclaredProperties(Class<?> aClass, String moduleName) {

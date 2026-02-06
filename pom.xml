@@ -23,8 +23,8 @@
 
     <licenses>
         <license>
-            <name>Eclipse Public License - v 1.0</name>
-            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+            <name>Eclipse Public License - v 2.0</name>
+            <url>https://www.eclipse.org/legal/epl-v20.html</url>
         </license>
 
         <license>
@@ -53,7 +53,7 @@
         <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
         <project.build.outputTimestamp>2026-01-25T18:02:13Z</project.build.outputTimestamp>
 
-        <logback.core.version>1.5.26</logback.core.version>
+        <logback-core.version>1.5.28-SNAPSHOT</logback-core.version>
         <slf4j.version>2.0.17</slf4j.version>
         <janino.version>3.1.8</janino.version>
 
@@ -151,13 +151,13 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>${logback.core.version}</version>
+                <version>${logback-core.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>${logback.core.version}</version>
+                <version>${logback-core.version}</version>
             </dependency>
 
             <dependency>
