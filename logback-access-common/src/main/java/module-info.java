@@ -21,7 +21,6 @@ module ch.qos.logback.access.common {
   exports ch.qos.logback.access.common.model.processor;
 
   exports ch.qos.logback.access.common.net;
-  exports ch.qos.logback.access.common.net.server;
 
   exports ch.qos.logback.access.common.pattern;
   exports ch.qos.logback.access.common.util;
