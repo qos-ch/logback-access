@@ -3,75 +3,85 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>ch.qos.logback.access</groupId>
-    <artifactId>parent</artifactId>
-    <version>2.0.10-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>ch.qos.logback.access</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.0.10-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>logback-access-jetty11</artifactId>
-  <packaging>jar</packaging>
-  <name>Logback Access Jetty 11 Module</name>
-  <description>Logback Access  Jetty 11 Module</description>
+    <artifactId>logback-access-jetty11</artifactId>
+    <packaging>jar</packaging>
+    <name>Logback Access Jetty 11 Module</name>
+    <description>Logback Access Jetty 11 Module</description>
 
-  <properties>
-  </properties>
-  
-  <dependencies>
+    <properties>
+    </properties>
 
-    <dependency>      
-      <groupId>ch.qos.logback.access</groupId>
-      <artifactId>logback-access-common</artifactId>
-    </dependency>
+    <dependencies>
 
-    <dependency>      
-      <groupId>ch.qos.logback.access</groupId>
-      <artifactId>logback-access-common</artifactId>
-      <version>${project.version}</version>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.access</groupId>
+            <artifactId>logback-access-common</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>${logback-core.version}</version>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>${jetty11.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.access</groupId>
+            <artifactId>logback-access-common</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
-  </dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-core.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
-  <build>
-    <plugins>
-      
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>once</forkMode>
-          <!--<parallel>classes</parallel>-->
-          <reportFormat>plain</reportFormat>
-          <disableXmlReport>true</disableXmlReport>
-          <excludes>
-            <exclude>**/AllAccessTest.java</exclude>
-            <exclude>**/PackageTest.java</exclude>
-            <exclude>**/SerializationPerfTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty11.version}</version>
+        </dependency>
 
-  <profiles>
-  </profiles>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>ch/qos/logback/access/jetty/logback-access-jetty11-version.properties</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <!--<parallel>classes</parallel>-->
+                    <reportFormat>plain</reportFormat>
+                    <disableXmlReport>true</disableXmlReport>
+                    <excludes>
+                        <exclude>**/AllAccessTest.java</exclude>
+                        <exclude>**/PackageTest.java</exclude>
+                        <exclude>**/SerializationPerfTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+    </profiles>
 
 </project>

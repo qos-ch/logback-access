@@ -306,8 +306,10 @@ public class RequestLogImpl extends ContextBase implements org.eclipse.jetty.uti
         try {
             String coreVersion = CoreVersionUtil.getCoreVersionBySelfDeclaredProperties();
             String accessCommonVersion = AccessCommonVersionUtil.getAccessCommonVersionBySelfDeclaredProperties();
-            VersionUtil.checkForVersionEquality(this, this.getClass(), accessCommonVersion, LOGBACK_ACCESS_JETTY11_NAME, LOGBACK_ACCESS_COMMON_NAME);
-            VersionUtil.compareExpectedAndFoundVersion(this, coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
+            String accessJetty11Version = Jetty11VersionUtil.getAccessJetty11VersionBySelfDeclaredProperties();
+            VersionUtil.checkForVersionEquality(this, accessJetty11Version, accessCommonVersion, LOGBACK_ACCESS_JETTY11_NAME, LOGBACK_ACCESS_COMMON_NAME);
+            AccessCommonVersionUtil accessCommonVersionUtil = new AccessCommonVersionUtil(this);
+            accessCommonVersionUtil.compareExpectedAndFoundVersion(coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
         } catch(NoClassDefFoundError e) {
             addWarn("Missing ch.logback.core.util.VersionUtil class on classpath. The version of logback-core is probably earlier than 1.5.25.");
         } catch(NoSuchMethodError e) {

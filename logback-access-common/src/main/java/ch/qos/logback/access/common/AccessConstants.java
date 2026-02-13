@@ -31,8 +31,12 @@ public class AccessConstants {
 
     public static final String COOKIE_REQUEST_PROP_KEY = "Cookie";
 
-    public static String LOGBACK_ACCESS_COMMON_NAME = "logback-access-common";
-    public static String LOGBACK_CORE_NAME = "logback-core";
+    public static String LOGBACK_ACCESS_COMMON_MODULE_NAME = "logback-access-common";
+    //public static String LOGBACK_ACCESS_COMMON_NAME = LOGBACK_ACCESS_COMMON_MODULE_NAME;
+
+
+    public static String LOGBACK_CORE_MODULE_NAME = "logback-core";
+    //public static String LOGBACK_CORE_NAME = LOGBACK_CORE_MODULE_NAME;
 
 
 }

@@ -74,6 +74,8 @@ import ch.qos.logback.core.util.Loader;
 import ch.qos.logback.core.util.OptionHelper;
 import ch.qos.logback.core.util.StatusListenerConfigHelper;
 
+import static ch.qos.logback.access.tomcat.AccessTomcatConstants.LOGBACK_ACCESS_TOMCAT_MODULE_NAME;
+
 //import org.apache.catalina.Lifecycle;
 
 /**
@@ -176,7 +178,6 @@ public class LogbackValve extends ValveBase
         setState(LifecycleState.STARTING);
     }
 
-    static String LOGBACK_ACCESS_TOMCAT_NAME = "logback-access-tomcat";
     static String LOGBACK_ACCESS_COMMON_NAME = "logback-access-common";
     static String LOGBACK_CORE_NAME = "logback-core";
 
@@ -184,8 +185,10 @@ public class LogbackValve extends ValveBase
         try {
             String coreVersion = CoreVersionUtil.getCoreVersionBySelfDeclaredProperties();
             String accessCommonVersion = AccessCommonVersionUtil.getAccessCommonVersionBySelfDeclaredProperties();
-            VersionUtil.checkForVersionEquality(this, this.getClass(), accessCommonVersion, LOGBACK_ACCESS_TOMCAT_NAME, LOGBACK_ACCESS_COMMON_NAME);
-            VersionUtil.compareExpectedAndFoundVersion(this, coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
+            String tomcatVersion = AccessTomcatVersionUtil.getCoreVersionBySelfDeclaredProperties();
+            VersionUtil.checkForVersionEquality(this, tomcatVersion, accessCommonVersion, LOGBACK_ACCESS_TOMCAT_MODULE_NAME, LOGBACK_ACCESS_COMMON_NAME);
+            AccessCommonVersionUtil accessCommonVersionUtil = new AccessCommonVersionUtil(this);
+            accessCommonVersionUtil.compareExpectedAndFoundVersion(coreVersion, AccessConstants.class, accessCommonVersion, LOGBACK_ACCESS_COMMON_NAME, LOGBACK_CORE_NAME);
         } catch(NoClassDefFoundError e) {
             addWarn("Missing ch.logback.core.util.VersionUtil class on classpath. The version of logback-core is probably earlier than 1.5.25.");
         } catch(NoSuchMethodError e) {

@@ -45,6 +45,7 @@
         <module>logback-access-tomcat_10_1_blackbox</module>
         <module>logback-access-tomcat_11_0_blackbox</module>
         <module>logback-access-jetty11</module>
+        <module>logback-access-jetty11-blackbox</module>
         <module>logback-access-jetty12</module>
         <module>logback-access-jetty12-blackbox</module>
     </modules>
@@ -53,7 +54,9 @@
         <!-- yyyy-MM-dd'T'HH:mm:ss'Z' -->
         <project.build.outputTimestamp>2026-01-25T18:02:13Z</project.build.outputTimestamp>
 
-        <logback-core.version>1.5.28-SNAPSHOT</logback-core.version>
+        <!-- don't change the *name* of the property (not the value) without also changing the property key in
+             logback-access-common-dependees.properties -->
+        <logback-core.version>1.5.30-SNAPSHOT</logback-core.version>
         <slf4j.version>2.0.17</slf4j.version>
         <janino.version>3.1.8</janino.version>
 
