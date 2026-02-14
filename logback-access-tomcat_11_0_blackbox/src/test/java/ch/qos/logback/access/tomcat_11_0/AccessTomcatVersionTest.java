@@ -17,6 +17,7 @@ package ch.qos.logback.access.tomcat;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AccessTomcatVersionTest {
 
@@ -26,5 +27,7 @@ public class AccessTomcatVersionTest {
 
         String version = AccessTomcatVersionUtil.getCoreVersionBySelfDeclaredProperties();
         assertNotNull(version);
+        System.out.println("version="+version);
+        assertTrue(version.startsWith("2.0"));
     }
 }
