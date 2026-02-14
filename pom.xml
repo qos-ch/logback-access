@@ -365,7 +365,7 @@
                     <publishingServerId>central</publishingServerId>
                     <!-- new lines are apparently not tolerated -->
                     <excludeArtifacts>
-                        logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox,logback-access-jetty11-blackbox,logback-access-jetty12_blackbox
+                        logback-access-common-blackbox,logback-access-tomcat_10_1_blackbox,logback-access-tomcat_11_0_blackbox,logback-access-jetty11_blackbox,logback-access-jetty12_blackbox
                     </excludeArtifacts>
                 </configuration>
             </plugin>
