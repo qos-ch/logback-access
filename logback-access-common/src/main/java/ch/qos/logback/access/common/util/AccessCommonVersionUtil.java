@@ -70,6 +70,7 @@ public class AccessCommonVersionUtil extends VersionUtil {
      *
      * @since 2.0.10
      */
+    @Override
     public String getExpectedVersionOfDependencyByProperties(Class<?> dependerClass, String propertiesFileName, String dependencyNameAsKey) {
         Properties props = new Properties();
         // propertiesFileName : logback-access-common-dependencies.properties
