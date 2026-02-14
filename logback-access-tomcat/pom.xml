@@ -3,94 +3,103 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>ch.qos.logback.access</groupId>
-    <artifactId>parent</artifactId>
-    <version>2.0.11-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>ch.qos.logback.access</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.0.11-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>logback-access-tomcat</artifactId>
-  <packaging>jar</packaging>
-  <name>Logback Access Tomcat Module</name>
-  <description>Logback Access Tomcat Module module</description>
+    <artifactId>logback-access-tomcat</artifactId>
+    <packaging>jar</packaging>
+    <name>Logback Access Tomcat Module</name>
+    <description>Logback Access Tomcat Module module</description>
 
-  <properties>
+    <properties>
 
-  </properties>
-  
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit-jupiter-params.version}</version>
-      <scope>test</scope>
-    </dependency>
+    </properties>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>      
-    </dependency>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-jupiter-params.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>${logback-core.version}</version>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>ch.qos.logback.access</groupId>
-      <artifactId>logback-access-common</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>ch.qos.logback.access</groupId>
-      <artifactId>logback-access-common</artifactId>
-      <version>${project.version}</version>      
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-   
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-catalina</artifactId>
-      <version>${tomcat_10_1.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-core.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
-    <dependency>
-      <groupId>org.apache.tomcat</groupId>
-      <artifactId>tomcat-coyote</artifactId>
-      <version>${tomcat_10_1.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.access</groupId>
+            <artifactId>logback-access-common</artifactId>
+        </dependency>
 
-  </dependencies>
+        <dependency>
+            <groupId>ch.qos.logback.access</groupId>
+            <artifactId>logback-access-common</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <configuration>
-          <forkMode>once</forkMode>
-          <!--<parallel>classes</parallel>-->
-          <reportFormat>plain</reportFormat>
-          <disableXmlReport>true</disableXmlReport>
-          <excludes>
-            <exclude>**/AllAccessTest.java</exclude>
-            <exclude>**/PackageTest.java</exclude>
-            <exclude>**/SerializationPerfTest.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-catalina</artifactId>
+            <version>${tomcat_10_1.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-  <profiles>
-  </profiles>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-coyote</artifactId>
+            <version>${tomcat_10_1.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>ch/qos/logback/access/tomcat/logback-access-tomcat-version.properties</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>once</forkMode>
+                    <!--<parallel>classes</parallel>-->
+                    <reportFormat>plain</reportFormat>
+                    <disableXmlReport>true</disableXmlReport>
+                    <excludes>
+                        <exclude>**/AllAccessTest.java</exclude>
+                        <exclude>**/PackageTest.java</exclude>
+                        <exclude>**/SerializationPerfTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+    </profiles>
 
 </project>

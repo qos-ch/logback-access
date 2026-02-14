@@ -12,8 +12,9 @@
  * as published by the Free Software Foundation.
  */
 
-package ch.qos.logback.access.tomcat;
+package ch.qos.logback.access.tomcat_11_0;
 
+import ch.qos.logback.access.tomcat.AccessTomcatVersionUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
