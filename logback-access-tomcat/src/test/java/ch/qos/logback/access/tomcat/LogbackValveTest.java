@@ -109,6 +109,18 @@ public class LogbackValveTest {
 
     }
 
+    @Test
+    public void inclusion() throws LifecycleException {
+        final String fileName = "inclusion/logback-top.xml";
+        setupValve(fileName);
+        valve.start();
+        checker.assertContainsMatch("Processing appender named \\[LIST\\]");
+        checker.assertContainsMatch("Attaching appender named \\[LIST\\]");
+        checker.assertIsWarningOrErrorFree();
+
+    }
+
+
     private void setupValve(final String resourceName) {
         valve.setFilename(resourceName);
         valve.setName("test");
