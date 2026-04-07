@@ -23,6 +23,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.Serializable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -546,7 +548,7 @@ public class AccessEvent implements Serializable, IAccessEvent {
                     buf.append("=");
                     String val = httpRequest.getParameter(key);
                     if (val != null) {
-                        buf.append(val);
+                        buf.append(URLEncoder.encode(val, StandardCharsets.UTF_8));
                     } else {
                         buf.append("");
                     }
