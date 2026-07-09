@@ -47,7 +47,7 @@ public class SocketNode implements Runnable {
         this.socket = socket;
         this.context = context;
         try {
-            hardenedOIS = new HardenedAccessEventInputStream(new BufferedInputStream(socket.getInputStream()));
+            hardenedOIS = new HardenedAccessEventInputStream(context, new BufferedInputStream(socket.getInputStream()));
         } catch (Exception e) {
             System.out.println("Could not open HardenedObjectInputStream to " + socket + e);
         }

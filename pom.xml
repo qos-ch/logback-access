@@ -56,9 +56,8 @@
 
         <!-- don't change the *name* of the property (not the value) without also changing the property key in
              logback-access-common-dependees.properties -->
-        <logback-core.version>1.5.32</logback-core.version>
+        <logback-core.version>1.5.38</logback-core.version>
         <slf4j.version>2.0.17</slf4j.version>
-        <janino.version>3.1.8</janino.version>
 
         <!-- minimal JDK version at runtime -->
         <jdk.version>11</jdk.version>

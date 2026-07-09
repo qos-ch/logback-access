@@ -16,15 +16,25 @@ package ch.qos.logback.access.common.net;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectStreamClass;
 
 import ch.qos.logback.access.common.spi.AccessEvent;
+import ch.qos.logback.core.Context;
 import ch.qos.logback.core.net.HardenedObjectInputStream;
 import jakarta.servlet.http.Cookie;
 
 public class HardenedAccessEventInputStream extends HardenedObjectInputStream {
 
-    public HardenedAccessEventInputStream(InputStream in) throws IOException {
-        super(in, new String[] { AccessEvent.class.getName(), String[].class.getName(), Cookie.class.getName() });
+    static String[] ACCESS_WHITE_LIST = new String[] { AccessEvent.class.getName(),
+            String[].class.getName(),
+            Cookie.class.getName(),
+            "java.util.CollSer",
+            "java.util.TreeMap",
+            "java.lang.String$CaseInsensitiveComparator"};
+
+    public HardenedAccessEventInputStream(Context context, InputStream in) throws IOException {
+        super(context, in, ACCESS_WHITE_LIST);
     }
+
 
 }

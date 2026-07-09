@@ -9,7 +9,6 @@ module ch.qos.logback.access.common.blackbox {
     requires org.junit.jupiter.params;
     requires org.assertj.core;
 
-    requires janino;
     requires jakarta.servlet;
 
     opens ch.qos.logback.access.common.blackbox.joran to org.junit.platform.commons;

@@ -44,7 +44,7 @@ public class AccessEventSerializationTest {
         oos.flush();
 
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-        HardenedAccessEventInputStream hardenedOIS = new HardenedAccessEventInputStream(bais);
+        HardenedAccessEventInputStream hardenedOIS = new HardenedAccessEventInputStream(null, bais);
 
         Object sae = hardenedOIS.readObject();
         hardenedOIS.close();

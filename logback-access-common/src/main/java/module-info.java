@@ -6,9 +6,6 @@ module ch.qos.logback.access.common {
 
   requires static java.management;
 
-  requires static janino;
-  requires static commons.compiler;
-
   exports ch.qos.logback.access.common;
   exports ch.qos.logback.access.common.boolex;
   exports ch.qos.logback.access.common.filter;
