@@ -16,7 +16,6 @@ package ch.qos.logback.access.common.util;
 
 import ch.qos.logback.access.common.AccessConstants;
 import ch.qos.logback.core.Context;
-import ch.qos.logback.core.status.WarnStatus;
 import ch.qos.logback.core.util.VersionUtil;
 
 import java.io.IOException;
