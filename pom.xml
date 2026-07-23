@@ -162,6 +162,8 @@
                 <version>${logback-core.version}</version>
             </dependency>
 
+            <!-- used in logback-access-common-blackbox and logback-access-tomcat_10_1_blackbox
+                 or in test scope in logback-access-common -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
