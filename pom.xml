@@ -348,7 +348,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <configuration>
-                    <linkJavadoc>false</linkJavadoc>
+                    <docTitle>Logback ${project.version} Reference</docTitle>
+                    <windowTitle>Logback ${project.version} Reference</windowTitle>
                     <excludes>
                         <!-- exclude blackbox modules. Did not find another way to do this. -->
                         <exclude>**/ch/qos/logback/access/tomcat_10_1/*.java</exclude>
