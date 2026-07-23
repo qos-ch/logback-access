@@ -194,7 +194,10 @@ public class PatternLayout extends PatternLayoutBase<IAccessEvent> {
         return ACCESS_DEFAULT_CONVERTER_SUPPLIER_MAP;
     }
 
-    @Override
+    /**
+     * @deprecated Use {@link #getDefaultConverterSupplierMap()} instead.
+     */
+    @Deprecated
     public Map<String, String> getDefaultConverterMap() {
         return Map.of();
     }
