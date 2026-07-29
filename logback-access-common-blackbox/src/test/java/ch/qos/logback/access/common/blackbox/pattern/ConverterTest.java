@@ -44,6 +44,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -79,8 +80,20 @@ public class ConverterTest {
     }
 
     @Test
-    public void testDateConverter() {
-        dateConverterChecker(parseDateAsMillis("2024-08-14T15:29:25.956Z"), List.of(), "14/.../2024:17:29:25 \\+\\d*");
+    public void testDateConverterWithDefaultTimezone() {
+        TimeZone originalTimeZone = TimeZone.getDefault();
+        try {
+            // Set a known timezone for deterministic testing
+            TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
+            dateConverterChecker(parseDateAsMillis("2024-08-14T15:29:25.956Z"), List.of(), "14/.../2024:17:29:25 \\+\\d*");
+        } finally {
+            // Restore original timezone
+            TimeZone.setDefault(originalTimeZone);
+        }
+    }
+
+    @Test
+    public void testDateConverterWithExplicitTimezone() {
         dateConverterChecker(parseDateAsMillis("2022-10-21T10:30:20.800Z"), List.of(CoreConstants.CLF_DATE_PATTERN, "Australia/Sydney", "en-AU"),
                         "21/Oct/2022:21:30:20 \\+1100");
         dateConverterChecker(parseDateAsMillis("2022-09-21T10:30:20.800Z"), List.of(CoreConstants.CLF_DATE_PATTERN, "UTC", "en"),
@@ -111,6 +124,7 @@ public class ConverterTest {
         assertTrue(result.matches(regex));
     }
 
+    @Test
     public void testLineLocalPortConverter() {
         LocalPortConverter converter = new LocalPortConverter();
         converter.start();
