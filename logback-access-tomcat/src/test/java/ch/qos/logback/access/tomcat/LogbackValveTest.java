@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LogbackValveTest {
 
@@ -32,6 +33,11 @@ public class LogbackValveTest {
     public void tearDown() {
         System.clearProperty(LogbackValve.CATALINA_BASE_KEY);
         System.clearProperty(LogbackValve.CATALINA_HOME_KEY);
+    }
+
+    @Test
+    public void asyncSupportedByDefault() {
+        assertTrue(valve.isAsyncSupported());
     }
 
     @Test

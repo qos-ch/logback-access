@@ -38,6 +38,7 @@ import ch.qos.logback.core.util.CoreVersionUtil;
 import ch.qos.logback.core.util.VersionUtil;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.catalina.AccessLog;
 import org.apache.catalina.Lifecycle;
@@ -91,6 +92,7 @@ import static ch.qos.logback.access.tomcat.AccessTomcatConstants.LOGBACK_ACCESS_
  * 
  * @author Ceki G&uuml;lc&uuml;
  * @author S&eacute;bastien Pennec
+ * @author Roman Kostenko
  */
 public class LogbackValve extends ValveBase
         implements Lifecycle, Context, AppenderAttachable<IAccessEvent>, FilterAttachable<IAccessEvent>, AccessLog {
@@ -121,13 +123,21 @@ public class LogbackValve extends ValveBase
     AppenderAttachableImpl<IAccessEvent> aai = new AppenderAttachableImpl<IAccessEvent>();
     String filenameOption;
     boolean quiet;
-    boolean started;
+    volatile boolean started;
+    boolean requestAttributesEnabled = true;
     boolean alreadySetLogbackStatusManager = false;
     private SequenceNumberGenerator sequenceNumberGenerator;
 
     private ScheduledExecutorService scheduledExecutorService;
 
+    /**
+     * Creates a valve which supports asynchronous requests. As access events are created once the request is
+     * finished, see {@link #log(Request, Response, long)}, asynchronous requests are logged with their final status,
+     * content length and elapsed time. Asynchronous support can be disabled by setting the
+     * {@code asyncSupported} attribute to {@code false}.
+     */
     public LogbackValve() {
+        super(true);
         putObject(CoreConstants.EVALUATOR_MAP, new HashMap<String, EventEvaluator<?>>());
     }
 
@@ -307,27 +317,48 @@ public class LogbackValve extends ValveBase
         if (!started) {
             return;
         }
-        TomcatServerAdapter adapter = new TomcatServerAdapter(request, response);
-        IAccessEvent accessEvent = new AccessEvent(this, request, response, adapter);
+        // Tomcat invokes this method within the finally block of CoyoteAdapter, just before recycling
+        // the request and response. Any exception escaping from here would skip the recycling.
+        try {
+            HttpServletRequest httpRequest = request;
+            if (requestAttributesEnabled && AccessLogAttributesRequestWrapper.hasAccessLogAttributes(request)) {
+                httpRequest = new AccessLogAttributesRequestWrapper(request);
+            }
+            TomcatServerAdapter adapter = new TomcatServerAdapter(request, response);
+            IAccessEvent accessEvent = new AccessEvent(this, httpRequest, response, adapter);
 
-        addThreadName(accessEvent);
+            addThreadName(accessEvent);
 
-        if (getFilterChainDecision(accessEvent) == FilterReply.DENY) {
-            return;
+            if (getFilterChainDecision(accessEvent) == FilterReply.DENY) {
+                return;
+            }
+
+            aai.appendLoopOnAppenders(accessEvent);
+        } catch (VirtualMachineError e) {
+            throw e;
+        } catch (Throwable t) {
+            addError("Failed to log access event for request [" + request.getRequestURI() + "]", t);
         }
-
-        // TODO better exception handling
-        aai.appendLoopOnAppenders(accessEvent);
     }
 
+    /**
+     * When enabled, which is the default, the values stored by valves such as {@code RemoteIpValve} under the
+     * {@link AccessLog} request attributes, e.g. {@link AccessLog#REMOTE_ADDR_ATTRIBUTE}, take precedence over the
+     * values of the request. This allows the remote address, remote host, protocol, server name and server port
+     * computed by {@code RemoteIpValve} to be logged even though {@code RemoteIpValve} restores the original values
+     * before the access event is created.
+     *
+     * @param requestAttributesEnabled whether to use the {@link AccessLog} request attributes
+     * @since 2.0.16
+     */
     @Override
     public void setRequestAttributesEnabled(boolean requestAttributesEnabled) {
-        // not supported: the request attributes set by RemoteIpValve are not used
+        this.requestAttributesEnabled = requestAttributesEnabled;
     }
 
     @Override
     public boolean getRequestAttributesEnabled() {
-        return false;
+        return requestAttributesEnabled;
     }
 
     private void addThreadName(IAccessEvent accessEvent) {

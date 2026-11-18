@@ -17,12 +17,16 @@ package ch.qos.logback.access.tomcat_11_0;
 import ch.qos.logback.access.common.testUtil.HttpGetUtil;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.access.tomcat.LogbackValve;
+import ch.qos.logback.core.filter.Filter;
+import ch.qos.logback.core.spi.FilterReply;
+import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.testUtil.RandomUtil;
 import jakarta.servlet.http.Cookie;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.catalina.valves.RemoteIpValve;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,12 +39,15 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class EmbeddedTomcatTest {
 
     Tomcat tomcat;
     int port;
     LogbackValve logbackValve;
+
+    static final String FORWARDED_FOR = "203.0.113.7";
 
     String text = "<html><body><p>Welcome</p></html></body>";
 
@@ -63,7 +70,10 @@ public class EmbeddedTomcatTest {
 
         setupValve("logback-stdout.xml");
         //logbackValve.setContainer(context);
-        logbackValve.setAsyncSupported(true);
+        // RemoteIpValve restores the original values once the request has passed through it
+        RemoteIpValve remoteIpValve = new RemoteIpValve();
+        remoteIpValve.setAsyncSupported(true);
+        context.getPipeline().addValve(remoteIpValve);
         context.getPipeline().addValve(logbackValve);
 
         tomcat.addServlet(contextPath, servletName, new SampleServlet(text));
@@ -136,6 +146,76 @@ public class EmbeddedTomcatTest {
         assertEquals(500, event.getStatusCode());
         assertEquals(AsyncErrorServlet.BODY.length(), event.getContentLength());
         assertTrue(event.getElapsedTime() >= 200, "elapsed time " + event.getElapsedTime() + " ms");
+    }
+
+    @Test
+    public void remoteIpValveValuesAreLogged() throws Exception {
+        HttpGetUtil hgu = new HttpGetUtil("http://127.0.0.1:" + port + "/forwarded");
+        hgu.init().addRequestProperty("X-Forwarded-For", FORWARDED_FOR).connect();
+        assertEquals(text, hgu.readResponse());
+        hgu.disconnect();
+
+        ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
+        IAccessEvent event = waitForSingleEvent(nla);
+        assertEquals(FORWARDED_FOR, event.getRemoteAddr());
+    }
+
+    @Test
+    public void remoteIpValveValuesAreIgnoredWhenRequestAttributesAreDisabled() throws Exception {
+        logbackValve.setRequestAttributesEnabled(false);
+        HttpGetUtil hgu = new HttpGetUtil("http://127.0.0.1:" + port + "/forwarded");
+        hgu.init().addRequestProperty("X-Forwarded-For", FORWARDED_FOR).connect();
+        assertEquals(text, hgu.readResponse());
+        hgu.disconnect();
+
+        ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
+        IAccessEvent event = waitForSingleEvent(nla);
+        assertEquals("127.0.0.1", event.getRemoteAddr());
+    }
+
+    @Test
+    public void failureWhileLoggingDoesNotAffectSubsequentRequests() throws Exception {
+        String failingUri = "/failing-filter";
+        Filter<IAccessEvent> failingFilter = new Filter<IAccessEvent>() {
+            @Override
+            public FilterReply decide(IAccessEvent event) {
+                if (failingUri.equals(event.getRequestURI())) {
+                    throw new IllegalStateException("simulated failure");
+                }
+                return FilterReply.NEUTRAL;
+            }
+        };
+        failingFilter.start();
+        logbackValve.addFilter(failingFilter);
+
+        HttpGetUtil failing = new HttpGetUtil("http://127.0.0.1:" + port + failingUri);
+        failing.init().connect();
+        assertEquals(text, failing.readResponse());
+        failing.disconnect();
+        waitForErrorStatus(failingUri);
+
+        String uri = "/after-failure";
+        HttpGetUtil hgu = new HttpGetUtil("http://127.0.0.1:" + port + uri);
+        hgu.init().connect();
+        assertEquals(text, hgu.readResponse());
+        hgu.disconnect();
+
+        ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
+        IAccessEvent event = waitForSingleEvent(nla);
+        assertEquals(uri, event.getRequestURI());
+    }
+
+    private void waitForErrorStatus(String messagePart) throws InterruptedException {
+        long deadline = System.currentTimeMillis() + 5000;
+        while (System.currentTimeMillis() < deadline) {
+            for (Status status : logbackValve.getStatusManager().getCopyOfStatusList()) {
+                if (status.getLevel() == Status.ERROR && status.getMessage().contains(messagePart)) {
+                    return;
+                }
+            }
+            Thread.sleep(10);
+        }
+        fail("no error status containing [" + messagePart + "]");
     }
 
     // Tomcat calls the valve once the response is finished, which can be just after the client has read it.
