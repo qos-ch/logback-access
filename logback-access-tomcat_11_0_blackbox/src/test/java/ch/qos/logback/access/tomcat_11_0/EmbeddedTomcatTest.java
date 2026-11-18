@@ -34,6 +34,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EmbeddedTomcatTest {
 
@@ -62,10 +63,13 @@ public class EmbeddedTomcatTest {
 
         setupValve("logback-stdout.xml");
         //logbackValve.setContainer(context);
+        logbackValve.setAsyncSupported(true);
         context.getPipeline().addValve(logbackValve);
 
         tomcat.addServlet(contextPath, servletName, new SampleServlet(text));
         context.addServletMappingDecoded(urlPattern, servletName);
+        Tomcat.addServlet(context, "AsyncErrorServlet", new AsyncErrorServlet()).setAsyncSupported(true);
+        context.addServletMappingDecoded("/async-error", "AsyncErrorServlet");
         tomcat.start();
 
     }
@@ -90,9 +94,7 @@ public class EmbeddedTomcatTest {
         System.out.println(response);
         assertEquals(text, response);
         ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
-        assertEquals(1, nla.list.size());
-
-        IAccessEvent event = nla.list.get(0);
+        IAccessEvent event = waitForSingleEvent(nla);
         assertEquals(uri, event.getRequestURI());
     }
 
@@ -108,9 +110,7 @@ public class EmbeddedTomcatTest {
         System.out.println(response);
         assertEquals(text, response);
         ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
-        assertEquals(1, nla.list.size());
-
-        IAccessEvent event = nla.list.get(0);
+        IAccessEvent event = waitForSingleEvent(nla);
         assertEquals(uri, event.getRequestURI());
 
         List<Cookie> cookies =  event.getCookies();
@@ -123,4 +123,28 @@ public class EmbeddedTomcatTest {
         }
     }
 
+
+    @Test
+    public void asyncRequestIsLoggedWhenItCompletes() throws Exception {
+        HttpGetUtil hgu = new HttpGetUtil("http://127.0.0.1:" + port + "/async-error");
+        HttpURLConnection connection = hgu.init().connect();
+        assertEquals(500, connection.getResponseCode());
+        hgu.disconnect();
+
+        ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
+        IAccessEvent event = waitForSingleEvent(nla);
+        assertEquals(500, event.getStatusCode());
+        assertEquals(AsyncErrorServlet.BODY.length(), event.getContentLength());
+        assertTrue(event.getElapsedTime() >= 200, "elapsed time " + event.getElapsedTime() + " ms");
+    }
+
+    // Tomcat calls the valve once the response is finished, which can be just after the client has read it.
+    private IAccessEvent waitForSingleEvent(ListAppender appender) throws InterruptedException {
+        long deadline = System.currentTimeMillis() + 5000;
+        while (appender.list.isEmpty() && System.currentTimeMillis() < deadline) {
+            Thread.sleep(10);
+        }
+        assertEquals(1, appender.list.size());
+        return appender.list.get(0);
+    }
 }

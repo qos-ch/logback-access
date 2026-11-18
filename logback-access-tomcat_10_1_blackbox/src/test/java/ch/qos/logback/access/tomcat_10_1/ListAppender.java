@@ -17,15 +17,17 @@ package ch.qos.logback.access.tomcat_10_1;
 import ch.qos.logback.access.common.spi.IAccessEvent;
 import ch.qos.logback.core.AppenderBase;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ListAppender extends AppenderBase<IAccessEvent>  {
 
-    public List<IAccessEvent> list = new ArrayList<>();
+    public List<IAccessEvent> list = new CopyOnWriteArrayList<>();
 
     @Override
     protected void append(IAccessEvent eventObject) {
+        // the request and response are recycled once Tomcat is done with them
+        eventObject.prepareForDeferredProcessing();
         list.add(eventObject);
     }
 }
