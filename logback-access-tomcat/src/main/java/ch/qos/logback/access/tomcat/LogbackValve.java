@@ -39,6 +39,7 @@ import ch.qos.logback.core.util.VersionUtil;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 
+import org.apache.catalina.AccessLog;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleListener;
@@ -92,7 +93,7 @@ import static ch.qos.logback.access.tomcat.AccessTomcatConstants.LOGBACK_ACCESS_
  * @author S&eacute;bastien Pennec
  */
 public class LogbackValve extends ValveBase
-        implements Lifecycle, Context, AppenderAttachable<IAccessEvent>, FilterAttachable<IAccessEvent> {
+        implements Lifecycle, Context, AppenderAttachable<IAccessEvent>, FilterAttachable<IAccessEvent>, AccessLog {
 
     public final static String DEFAULT_FILENAME = "logback-access.xml";
     public final static String DEFAULT_CONFIG_FILE = "conf" + File.separatorChar + DEFAULT_FILENAME;
@@ -292,21 +293,41 @@ public class LogbackValve extends ValveBase
             }
 
             getNext().invoke(request, response);
-
-            TomcatServerAdapter adapter = new TomcatServerAdapter(request, response);
-            IAccessEvent accessEvent = new AccessEvent(this, request, response, adapter);
-
-            addThreadName(accessEvent);
-
-            if (getFilterChainDecision(accessEvent) == FilterReply.DENY) {
-                return;
-            }
-
-            // TODO better exception handling
-            aai.appendLoopOnAppenders(accessEvent);
         } finally {
             request.removeAttribute(AccessConstants.LOGBACK_STATUS_MANAGER_KEY);
         }
+    }
+
+    /**
+     * Called by Tomcat once the request is finished, including asynchronous requests. When {@link #invoke} returns,
+     * an asynchronous request is not finished yet: its status, content length and elapsed time are not known.
+     */
+    @Override
+    public void log(Request request, Response response, long time) {
+        if (!started) {
+            return;
+        }
+        TomcatServerAdapter adapter = new TomcatServerAdapter(request, response);
+        IAccessEvent accessEvent = new AccessEvent(this, request, response, adapter);
+
+        addThreadName(accessEvent);
+
+        if (getFilterChainDecision(accessEvent) == FilterReply.DENY) {
+            return;
+        }
+
+        // TODO better exception handling
+        aai.appendLoopOnAppenders(accessEvent);
+    }
+
+    @Override
+    public void setRequestAttributesEnabled(boolean requestAttributesEnabled) {
+        // not supported: the request attributes set by RemoteIpValve are not used
+    }
+
+    @Override
+    public boolean getRequestAttributesEnabled() {
+        return false;
     }
 
     private void addThreadName(IAccessEvent accessEvent) {

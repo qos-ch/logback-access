@@ -90,9 +90,7 @@ public class EmbeddedTomcatTest {
         System.out.println(response);
         assertEquals(text, response);
         ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
-        assertEquals(1, nla.list.size());
-
-        IAccessEvent event = nla.list.get(0);
+        IAccessEvent event = waitForSingleEvent(nla);
         assertEquals(uri, event.getRequestURI());
     }
 
@@ -108,9 +106,7 @@ public class EmbeddedTomcatTest {
         System.out.println(response);
         assertEquals(text, response);
         ListAppender nla = (ListAppender) logbackValve.getAppender("LIST");
-        assertEquals(1, nla.list.size());
-
-        IAccessEvent event = nla.list.get(0);
+        IAccessEvent event = waitForSingleEvent(nla);
         assertEquals(uri, event.getRequestURI());
 
         List<Cookie> cookies =  event.getCookies();
@@ -124,4 +120,14 @@ public class EmbeddedTomcatTest {
 
     }
 
+
+    // Tomcat calls the valve once the response is finished, which can be just after the client has read it.
+    private IAccessEvent waitForSingleEvent(ListAppender appender) throws InterruptedException {
+        long deadline = System.currentTimeMillis() + 5000;
+        while (appender.list.isEmpty() && System.currentTimeMillis() < deadline) {
+            Thread.sleep(10);
+        }
+        assertEquals(1, appender.list.size());
+        return appender.list.get(0);
+    }
 }
